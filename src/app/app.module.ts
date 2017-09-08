@@ -1,21 +1,19 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
+import { DrawerModule } from './modules/drawer/drawer.module';
 import { DocumentService } from './services/document.service';
-import { DrawerComponent } from './modules/drawer/components/drawer/drawer.component';
-import { DrawerContainerComponent } from './modules/drawer/components/drawer-container/drawer-container.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DrawerComponent,
-    DrawerContainerComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    DrawerModule
   ],
   providers: [DocumentService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
