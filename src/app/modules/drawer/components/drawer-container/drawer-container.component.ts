@@ -1,11 +1,5 @@
 import { AfterContentInit, Component, ContentChildren, QueryList } from '@angular/core';
-import { startWith } from 'rxjs/operator/startWith';
 import { DrawerComponent } from '../drawer/drawer.component';
-
-/** Throws an exception when two <app-drawer>s are matching the same position. */
-export function throwDuplicatedError(position: string) {
-  throw Error(`A drawer was already declared for 'position="${position}"'`);
-}
 
 /**
  * <app-drawer-container>
@@ -20,40 +14,20 @@ export function throwDuplicatedError(position: string) {
 })
 export class DrawerContainerComponent implements AfterContentInit {
   @ContentChildren(DrawerComponent) panels: QueryList<DrawerComponent>;
-  /** The drawer child with the `start` position. */
-  private start: DrawerComponent;
-  /** The drawer child with the `end` position. */
-  private end: DrawerComponent;
 
   constructor() { }
 
   ngAfterContentInit(): void {
-    startWith.call(this.panels.changes, null).subscribe(() => {
-      this.validatePanels();
-    });
+    this.validatePanels();
   }
 
   /** Validate the state of the drawer children components. */
   private validatePanels() {
-    this.start = this.end = null;
-
-    // Ensure that we have at most one start and one end drawer.
-    this.panels.forEach(panel => {
-      if (panel.position === 'end') {
-        if (this.end) {
-          throwDuplicatedError('end');
-        }
-
-        this.end = panel;
-      } else {
-        if (this.start) {
-          throwDuplicatedError('start');
-        }
-
-        this.start = panel;
-        this.start.position = 'start';
-      }
-    });
+    if (this.panels.length > 2) {
+      throw Error(`A maximum of two drawers can be declared for a drawer container.`);
+    } else if (this.panels.length === 2 && this.panels.first.position === this.panels.last.position) {
+      throw Error(`A drawer was already declared for 'position="${this.panels.first.position}"'.`);
+    }
   }
 
 }

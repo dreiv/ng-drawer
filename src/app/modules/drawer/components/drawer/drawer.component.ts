@@ -14,22 +14,27 @@ import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/co
 })
 export class DrawerComponent {
   /** Whether the drawer is opened. */
-  @HostBinding('class.opened') opened: boolean;
+  @HostBinding('class.opened') private opened: boolean;
 
   /** Whether the drawer is located at the start of it's container. */
-  @HostBinding('class.start')
-  get isStart() {
-    return this.position === 'start';
-  }
+  @HostBinding('class.start') private isStart: boolean;
 
   /** Whether the drawer is located at the end of it's container. */
-  @HostBinding('class.end')
-  get isEnd() {
-    return this.position === 'end';
-  }
+  @HostBinding('class.end') private isEnd: boolean;
 
   /** The side that the panel is attached to. */
-  @Input() position: 'start' | 'end';
+  @Input()
+  get position() { return this._position; }
+
+  set position(value: 'start' | 'end') {
+    this._position = value;
+
+    this.isStart = value === 'start';
+    this.isEnd = value === 'end';
+  }
+
+  private _position: 'start' | 'end' = 'start';
+
   /** Whether the drawer is docked to the side of the container. */
   @Input() dock: boolean;
 
