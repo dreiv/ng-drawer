@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, ContentChildren, QueryList } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, Component, ContentChildren, QueryList } from '@angular/core';
 import { DrawerComponent } from '../drawer/drawer.component';
 
 /**
@@ -10,7 +10,8 @@ import { DrawerComponent } from '../drawer/drawer.component';
 @Component({
   selector: 'app-drawer-container',
   templateUrl: './drawer-container.component.html',
-  styleUrls: ['./drawer-container.component.scss']
+  styleUrls: ['./drawer-container.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DrawerContainerComponent implements AfterContentInit {
   @ContentChildren(DrawerComponent) panels: QueryList<DrawerComponent>;

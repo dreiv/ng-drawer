@@ -1,4 +1,11 @@
-import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
+
+export type DrawerPosition = 'start' | 'end';
+
+export const DrawerPosition = {
+  Start: 'start' as DrawerPosition,
+  End: 'end' as DrawerPosition
+};
 
 /**
  * <app-drawer>
@@ -10,31 +17,19 @@ import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/co
 @Component({
   selector: 'app-drawer',
   templateUrl: './drawer.component.html',
-  styleUrls: ['./drawer.component.scss']
+  styleUrls: ['./drawer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DrawerComponent {
+export class DrawerComponent implements OnInit {
   /** Whether the drawer is opened. */
   @HostBinding('class.opened') private opened: boolean;
-
   /** Whether the drawer is located at the start of it's container. */
-  @HostBinding('class.start') private isStart: boolean;
-
+  @HostBinding('class.start') private isPositionStart: boolean;
   /** Whether the drawer is located at the end of it's container. */
-  @HostBinding('class.end') private isEnd: boolean;
+  @HostBinding('class.end') private isPositionEnd: boolean;
 
   /** The side that the panel is attached to. */
-  @Input()
-  get position() { return this._position; }
-
-  set position(value: 'start' | 'end') {
-    this._position = value;
-
-    this.isStart = value === 'start';
-    this.isEnd = value === 'end';
-  }
-
-  private _position: 'start' | 'end' = 'start';
-
+  @Input() position: DrawerPosition = DrawerPosition.Start;
   /** Whether the drawer is docked to the side of the container. */
   @Input() dock: boolean;
 
@@ -45,6 +40,11 @@ export class DrawerComponent {
   @Output() onClose = new EventEmitter();
 
   constructor() { }
+
+  ngOnInit(): void {
+    this.isPositionStart = this.position === DrawerPosition.Start;
+    this.isPositionEnd = this.position === DrawerPosition.End;
+  }
 
   /** Open the drawer. */
   public open() {
