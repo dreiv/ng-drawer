@@ -3,32 +3,43 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
 
+
+export enum FormFactor { PHONE, TABLET, DESKTOP }
+
 @Injectable()
 export class DocumentService {
   private windowResizeSpy$: Subject<any> = new Subject<any>();
-  windowWidth$: Subject<number> = new BehaviorSubject(window.innerWidth);
+  formFactor$: Subject<FormFactor> = new BehaviorSubject(this.getFormFactor());
 
   constructor(private zone: NgZone) {
     this.zone.runOutsideAngular(() => {
-      this.spyOnWindowResize();
+      Observable.fromEvent(window, 'resize')
+        .debounceTime(500)
+        .subscribe((e: Event) => {
+          this.zone.run(() => {
+            this.windowResizeSpy$.next(e);
+          });
+        });
     });
 
     this.windowResizeSpy$
-      .map(() => window.innerWidth)
+      .map(() => this.getFormFactor())
       .distinctUntilChanged()
-      .subscribe((width: number) => {
-        this.windowWidth$.next(width);
-      });
+      .subscribe((factor: FormFactor) => {
+        this.formFactor$.next(factor);
+    });
   }
 
-  private spyOnWindowResize() {
-    Observable.fromEvent(window, 'resize')
-      .debounceTime(500)
-      .subscribe((e: Event) => {
-        this.zone.run(() => {
-          this.windowResizeSpy$.next(e);
-        });
-      });
+  private getFormFactor(): FormFactor {
+    const deviceWidth = window.innerWidth;
+
+    if (deviceWidth < 768) {
+      return FormFactor.PHONE;
+    } else if (deviceWidth < 1200) {
+      return FormFactor.TABLET;
+    } else {
+      return FormFactor.DESKTOP;
+    }
   }
 
 }

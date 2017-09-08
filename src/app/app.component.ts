@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, QueryList, ViewChildren } from '@angular/core';
 import { DrawerComponent } from './modules/drawer/components/drawer/drawer.component';
-import { DocumentService } from './services/document.service';
+import { DocumentService, FormFactor } from './services/document.service';
 
 @Component({
   selector: 'app-root',
@@ -13,16 +13,12 @@ export class AppComponent implements AfterViewInit {
   constructor(private documentSpy$: DocumentService) { }
 
   ngAfterViewInit(): void {
-    this.documentSpy$.windowWidth$
-      .map(width => width > 800)
+    this.documentSpy$.formFactor$
+      .map(factor => factor !== FormFactor.PHONE)
       .distinctUntilChanged()
-      .subscribe((shouldBeDocked: boolean) => {
+      .subscribe((shouldDock: boolean) => {
         this.drawers.forEach((drawer: DrawerComponent) => {
-          // TODO: find a better way to do this
-          // Added this timeout to avoid angular changed after checked error.
-          setTimeout(() => {
-            drawer.dock = shouldBeDocked;
-          });
+          drawer.dock = shouldDock;
         });
       });
   }
