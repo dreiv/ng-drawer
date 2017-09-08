@@ -6,7 +6,7 @@ import { Subject } from 'rxjs/Subject';
 @Injectable()
 export class DocumentService {
   private windowResizeSpy$: Subject<any> = new Subject<any>();
-  windowWidth$: BehaviorSubject<number>;
+  windowWidth$: Subject<number> = new BehaviorSubject(window.innerWidth);
 
   constructor(private zone: NgZone) {
     this.zone.runOutsideAngular(() => {
@@ -14,16 +14,16 @@ export class DocumentService {
     });
 
     this.windowResizeSpy$
+      .map(() => window.innerWidth)
       .distinctUntilChanged()
-      .subscribe(() => {
-        console.log('triggered');
+      .subscribe((width: number) => {
+        this.windowWidth$.next(width);
       });
   }
 
   private spyOnWindowResize() {
     Observable.fromEvent(window, 'resize')
-      .debounceTime(400)
-      .distinctUntilChanged()
+      .debounceTime(500)
       .subscribe((e: Event) => {
         this.zone.run(() => {
           this.windowResizeSpy$.next(e);
