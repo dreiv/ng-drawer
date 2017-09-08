@@ -1,0 +1,16 @@
+footer {
+  position: fixed;
+  background: lime;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  display: flex;
+  justify-content: space-around;
+
+  padding: .5em;
+
+  button {
+    line-height: 4em;
+  }
+}
