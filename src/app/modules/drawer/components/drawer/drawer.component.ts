@@ -31,6 +31,7 @@ export class DrawerComponent implements OnInit {
   /** The side that the panel is attached to. */
   @Input() position: DrawerPosition = DrawerPosition.Start;
   /** Whether the drawer is docked to the side of the container. */
+  @HostBinding('class.docked')
   @Input() dock: boolean;
 
   /** Emits whenever the panel has started opening. */
