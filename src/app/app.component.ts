@@ -18,7 +18,7 @@ export class AppComponent implements AfterViewInit {
       .distinctUntilChanged()
       .subscribe((shouldDock: boolean) => {
         this.drawers.forEach((drawer: DrawerComponent) => {
-          drawer.dock = shouldDock;
+          Promise.resolve(null).then(() => drawer.dock = shouldDock);
         });
       });
   }
