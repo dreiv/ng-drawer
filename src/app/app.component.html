@@ -1,5 +1,5 @@
 <app-drawer-container #drawer>
-  <app-drawer #spStart>
+  <app-drawer #spStart [dock]="isDocked">
     <h1>Side Panel</h1>
 
     <button (click)="spStart.close()">Close me</button>
@@ -9,7 +9,7 @@
     <button (click)="spEnd.open()">Open Related</button>
   </app-drawer>
 
-  <app-drawer #spEnd [position]="'end'">
+  <app-drawer #spEnd [position]="'end'" [dock]="isDocked">
     <h1>Side Panel</h1>
 
     <button (click)="spEnd.close()">Close me</button>

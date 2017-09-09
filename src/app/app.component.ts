@@ -9,17 +9,16 @@ import { DocumentService, FormFactor } from './services/document.service';
 })
 export class AppComponent implements AfterViewInit {
   @ViewChildren(DrawerComponent) drawers: QueryList<DrawerComponent>;
+  isDocked: boolean;
 
-  constructor(private documentSpy$: DocumentService) { }
+  constructor(private documentSpy$: DocumentService) {
+    this.isDocked = documentSpy$.formFactor$.getValue() !== FormFactor.PHONE;
+  }
 
   ngAfterViewInit(): void {
     this.documentSpy$.formFactor$
       .map(factor => factor !== FormFactor.PHONE)
       .distinctUntilChanged()
-      .subscribe((shouldDock: boolean) => {
-        this.drawers.forEach((drawer: DrawerComponent) => {
-          Promise.resolve(null).then(() => drawer.dock = shouldDock);
-        });
-      });
+      .subscribe(shouldDock => this.drawers.forEach(drawer => drawer.dock = shouldDock));
   }
 }
