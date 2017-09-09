@@ -15,6 +15,7 @@ export class AppComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.documentSpy$.formFactor$
+      .skip(1)
       .map(factor => factor !== FormFactor.PHONE)
       .distinctUntilChanged()
       .subscribe(shouldDock => this.drawers.forEach(drawer => drawer.dock = shouldDock));
