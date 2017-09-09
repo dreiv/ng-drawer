@@ -9,11 +9,9 @@ import { DocumentService, FormFactor } from './services/document.service';
 })
 export class AppComponent implements AfterViewInit {
   @ViewChildren(DrawerComponent) drawers: QueryList<DrawerComponent>;
-  isDocked: boolean;
+  shouldDock = this.documentSpy$.formFactor$.getValue() !== FormFactor.PHONE;
 
-  constructor(private documentSpy$: DocumentService) {
-    this.isDocked = documentSpy$.formFactor$.getValue() !== FormFactor.PHONE;
-  }
+  constructor(private documentSpy$: DocumentService) {}
 
   ngAfterViewInit(): void {
     this.documentSpy$.formFactor$
