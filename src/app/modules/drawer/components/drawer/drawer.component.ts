@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 export type DrawerPosition = 'start' | 'end';
@@ -48,10 +48,27 @@ export class DrawerComponent implements OnInit {
 
   set docked(value: boolean) {
     this._docked = value;
+    this.onDockedStateChange.emit();
     this.computeStyle();
   }
 
   private _docked: boolean;
+
+  @Input()
+  get dockedSize(): string {
+    return this._dockedSize;
+  }
+
+  set dockedSize(value: string) {
+    this._dockedSize = value;
+    this.onDockedStateChange.emit();
+    this.computeStyle();
+  }
+
+  /** Emits whenever the drawer docked state changes. */
+  @Output() onDockedStateChange = new EventEmitter();
+
+  private _dockedSize = '50px';
 
   constructor(private sanitizer: DomSanitizer) { }
 
@@ -92,10 +109,10 @@ export class DrawerComponent implements OnInit {
       if (this.docked) {
         switch (this.position) {
           case DrawerPosition.Start:
-            transformStyle += ` translateX(50px)`;
+            transformStyle += ` translateX(${this.dockedSize})`;
             break;
           case DrawerPosition.End:
-            transformStyle += ` translateX(-50px)`;
+            transformStyle += ` translateX(-${this.dockedSize})`;
             break;
         }
       }

@@ -1,5 +1,5 @@
-import { AfterContentInit, ChangeDetectionStrategy, Component, ContentChildren, QueryList } from '@angular/core';
-import { DrawerComponent } from '../drawer/drawer.component';
+import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, QueryList } from '@angular/core';
+import { DrawerComponent, DrawerPosition } from '../drawer/drawer.component';
 
 /**
  * <app-drawer-container>
@@ -14,21 +14,39 @@ import { DrawerComponent } from '../drawer/drawer.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DrawerContainerComponent implements AfterContentInit {
-  @ContentChildren(DrawerComponent) panels: QueryList<DrawerComponent>;
+  @ContentChildren(DrawerComponent) drawers: QueryList<DrawerComponent>;
 
-  constructor() { }
+  contentStyle: CSSStyleDeclaration = {} as CSSStyleDeclaration;
+
+  constructor(private ref: ChangeDetectorRef) { }
 
   ngAfterContentInit(): void {
     this.validatePanels();
+    this.drawers.forEach(drawer => this.watch(drawer));
   }
 
   /** Validate the state of the drawer children components. */
   private validatePanels() {
-    if (this.panels.length > 2) {
+    if (this.drawers.length > 2) {
       throw Error(`A maximum of two drawers can be declared for a drawer container.`);
-    } else if (this.panels.length === 2 && this.panels.first.position === this.panels.last.position) {
-      throw Error(`A drawer was already declared for 'position="${this.panels.first.position}"'.`);
+    } else if (this.drawers.length === 2 && this.drawers.first.position === this.drawers.last.position) {
+      throw Error(`A drawer was already declared for 'position="${this.drawers.first.position}"'.`);
     }
   }
 
+  /** Actions done on panel events. */
+  private watch(drawer: DrawerComponent): void {
+    drawer.onDockedStateChange.subscribe(() => {
+      switch (drawer.position) {
+        case DrawerPosition.Start:
+          this.contentStyle.paddingLeft = drawer.docked ? drawer.dockedSize : 'inherit';
+          break;
+        case DrawerPosition.End:
+          this.contentStyle.paddingRight = drawer.docked ? drawer.dockedSize : 'inherit';
+          break;
+      }
+
+      this.ref.markForCheck();
+    });
+  }
 }
