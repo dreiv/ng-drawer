@@ -1,16 +1,12 @@
 <app-drawer-container #drawer>
-  <app-drawer #spStart [dock]="shouldDock">
-    <h1>Side Panel</h1>
+  <!--<app-drawer #spStart [docked]="shouldDock">-->
+  <!--<h1>Start Panel</h1>-->
 
-    <button (click)="spStart.close()">Close me</button>
+  <!--<button (click)="spStart.close()">Close me</button>-->
+  <!--</app-drawer>-->
 
-    <h2>Open related:</h2>
-
-    <button (click)="spEnd.open()">Open Related</button>
-  </app-drawer>
-
-  <app-drawer #spEnd [position]="'end'" [dock]="shouldDock">
-    <h1>Side Panel</h1>
+  <app-drawer #spEnd [position]="'end'" [docked]="shouldDock">
+    <h1>End Panel</h1>
 
     <button (click)="spEnd.close()">Close me</button>
   </app-drawer>
@@ -150,6 +146,6 @@
 </app-drawer-container>
 
 <footer>
-  <button (click)="spStart.toggle()">TOC</button>
+  <!--<button (click)="spStart.toggle()">TOC</button>-->
   <button (click)="spEnd.toggle()">RELATED</button>
 </footer>

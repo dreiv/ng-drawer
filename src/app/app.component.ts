@@ -18,6 +18,6 @@ export class AppComponent implements AfterViewInit {
       .skip(1)
       .map(factor => factor !== FormFactor.PHONE)
       .distinctUntilChanged()
-      .subscribe(shouldDock => this.drawers.forEach(drawer => drawer.dock = shouldDock));
+      .subscribe(shouldDock => this.drawers.forEach(drawer => drawer.docked = shouldDock));
   }
 }

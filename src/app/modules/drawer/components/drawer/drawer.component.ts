@@ -22,31 +22,36 @@ export const DrawerPosition = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DrawerComponent {
-  @HostBinding('style')
-  get myStyle(): SafeStyle {
-    let transformStyle = `transform:`;
-
-    if (!this.opened) {
-      const isStart = this.position === DrawerPosition.Start;
-      const transformPosition = `translateX(${isStart ? '-' : ''}100%)`;
-      const transformDocked = this.dock ? ` translateX(${!isStart ? '-' : ''}50px)` : '';
-
-      transformStyle += `${transformPosition}${transformDocked}`;
-    } else {
-      transformStyle += 'inherit';
-    }
-
-    return this.sanitizer.bypassSecurityTrustStyle(transformStyle);
-  }
+  @HostBinding('style') private style: SafeStyle = this.getStyle();
 
   /** Whether the drawer is opened. */
-  private opened: boolean;
+  @Input()
+  get opened(): boolean {
+    return this._opened;
+  }
+
+  set opened(value: boolean) {
+    this._opened = value;
+    this.style = this.getStyle();
+  }
+
+  private _opened: boolean;
 
   /** The side that the panel is attached to. */
   @Input() position: DrawerPosition = DrawerPosition.Start;
+
   /** Whether the drawer is docked to the side of the container. */
-  @HostBinding('class.docked')
-  @Input() dock: boolean;
+  @Input()
+  get docked(): boolean {
+    return this._docked;
+  }
+
+  set docked(value: boolean) {
+    this._docked = value;
+    this.style = this.getStyle();
+  }
+
+  private _docked: boolean;
 
   /** Emits whenever the panel has started opening. */
   @Output() onOpen = new EventEmitter();
@@ -73,6 +78,22 @@ export class DrawerComponent {
   toggle(isOpen: boolean = !this.opened) {
     this.opened = isOpen;
     isOpen ? this.onOpen.emit() : this.onClose.emit();
+  }
+
+  private getStyle(): SafeStyle {
+    let transformStyle = `transform:`;
+
+    if (!this.opened) {
+      const isStart = this.position === DrawerPosition.Start;
+      const transformPosition = `translateX(${isStart ? '-' : ''}100%)`;
+      const transformDocked = this.docked ? ` translateX(${!isStart ? '-' : ''}50px)` : '';
+
+      transformStyle += `${transformPosition}${transformDocked}`;
+    } else {
+      transformStyle += 'inherit';
+    }
+
+    return this.sanitizer.bypassSecurityTrustStyle(transformStyle);
   }
 
 }
