@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit } from '@angular/core';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 export type DrawerPosition = 'start' | 'end';
@@ -21,8 +21,8 @@ export const DrawerPosition = {
   styleUrls: ['./drawer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DrawerComponent {
-  @HostBinding('style') private style: SafeStyle = this.getStyle();
+export class DrawerComponent implements OnInit {
+  @HostBinding('style') private style: SafeStyle;
 
   /** Whether the drawer is opened. */
   @Input()
@@ -32,7 +32,7 @@ export class DrawerComponent {
 
   set opened(value: boolean) {
     this._opened = value;
-    this.style = this.getStyle();
+    this.computeStyle();
   }
 
   private _opened: boolean;
@@ -48,12 +48,16 @@ export class DrawerComponent {
 
   set docked(value: boolean) {
     this._docked = value;
-    this.style = this.getStyle();
+    this.computeStyle();
   }
 
   private _docked: boolean;
 
   constructor(private sanitizer: DomSanitizer) { }
+
+  ngOnInit(): void {
+    this.computeStyle();
+  }
 
   /** Open the drawer. */
   public open() {
@@ -73,7 +77,7 @@ export class DrawerComponent {
     this.opened = isOpen;
   }
 
-  private getStyle(): SafeStyle {
+  private computeStyle() {
     let transformStyle = `transform:`;
 
     if (!this.opened) {
@@ -99,7 +103,7 @@ export class DrawerComponent {
       transformStyle += 'inherit';
     }
 
-    return this.sanitizer.bypassSecurityTrustStyle(transformStyle);
+    this.style = this.sanitizer.bypassSecurityTrustStyle(transformStyle);
   }
 
 }
