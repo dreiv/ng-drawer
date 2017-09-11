@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 export type DrawerPosition = 'start' | 'end';
@@ -53,12 +53,6 @@ export class DrawerComponent {
 
   private _docked: boolean;
 
-  /** Emits whenever the panel has started opening. */
-  @Output() onOpen = new EventEmitter();
-
-  /** Emits whenever the panel has started closing. */
-  @Output() onClose = new EventEmitter();
-
   constructor(private sanitizer: DomSanitizer) { }
 
   /** Open the drawer. */
@@ -77,18 +71,30 @@ export class DrawerComponent {
    */
   toggle(isOpen: boolean = !this.opened) {
     this.opened = isOpen;
-    isOpen ? this.onOpen.emit() : this.onClose.emit();
   }
 
   private getStyle(): SafeStyle {
     let transformStyle = `transform:`;
 
     if (!this.opened) {
-      const isStart = this.position === DrawerPosition.Start;
-      const transformPosition = `translateX(${isStart ? '-' : ''}100%)`;
-      const transformDocked = this.docked ? ` translateX(${!isStart ? '-' : ''}50px)` : '';
-
-      transformStyle += `${transformPosition}${transformDocked}`;
+      switch (this.position) {
+        case DrawerPosition.Start:
+          transformStyle += `translateX(-100%)`;
+          break;
+        case DrawerPosition.End:
+          transformStyle += `translateX(100%)`;
+          break;
+      }
+      if (this.docked) {
+        switch (this.position) {
+          case DrawerPosition.Start:
+            transformStyle += ` translateX(50px)`;
+            break;
+          case DrawerPosition.End:
+            transformStyle += ` translateX(-50px)`;
+            break;
+        }
+      }
     } else {
       transformStyle += 'inherit';
     }
