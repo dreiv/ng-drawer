@@ -1,4 +1,5 @@
 import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, QueryList } from '@angular/core';
+import { startWith } from 'rxjs/operator/startWith';
 import { DrawerComponent, DrawerPosition } from '../drawer/drawer.component';
 
 /**
@@ -36,13 +37,13 @@ export class DrawerContainerComponent implements AfterContentInit {
 
   /** Actions done on panel events. */
   private watch(drawer: DrawerComponent): void {
-    drawer.onDockedStateChange.subscribe(() => {
+    startWith.call(drawer.onDockedStateChange, null).subscribe(() => {
       switch (drawer.position) {
         case DrawerPosition.Start:
-          this.contentStyle.paddingLeft = drawer.docked ? drawer.dockedSize : 'inherit';
+          this.contentStyle.marginLeft = drawer.docked ? drawer.dockedSize : 'inherit';
           break;
         case DrawerPosition.End:
-          this.contentStyle.paddingRight = drawer.docked ? drawer.dockedSize : 'inherit';
+          this.contentStyle.marginRight = drawer.docked ? drawer.dockedSize : 'inherit';
           break;
       }
 
