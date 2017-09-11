@@ -9,11 +9,10 @@ footer {
   bottom: 0;
   left: 0;
   right: 0;
-
   display: flex;
   justify-content: space-around;
-
   padding: .5em;
+  z-index: 2;
 
   button {
     line-height: 4em;
