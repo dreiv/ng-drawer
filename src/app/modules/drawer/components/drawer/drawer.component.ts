@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 export type DrawerPosition = 'start' | 'end';
 
@@ -20,13 +21,26 @@ export const DrawerPosition = {
   styleUrls: ['./drawer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DrawerComponent implements OnInit {
+export class DrawerComponent {
+  @HostBinding('style')
+  get myStyle(): SafeStyle {
+    let transformStyle = `transform:`;
+
+    if (!this.opened) {
+      const isStart = this.position === DrawerPosition.Start;
+      const transformPosition = `translateX(${isStart ? '-' : ''}100%)`;
+      const transformDocked = this.dock ? ` translateX(${!isStart ? '-' : ''}50px)` : '';
+
+      transformStyle += `${transformPosition}${transformDocked}`;
+    } else {
+      transformStyle += 'inherit';
+    }
+
+    return this.sanitizer.bypassSecurityTrustStyle(transformStyle);
+  }
+
   /** Whether the drawer is opened. */
-  @HostBinding('class.opened') private opened: boolean;
-  /** Whether the drawer is located at the start of it's container. */
-  @HostBinding('class.start') private isPositionStart: boolean;
-  /** Whether the drawer is located at the end of it's container. */
-  @HostBinding('class.end') private isPositionEnd: boolean;
+  private opened: boolean;
 
   /** The side that the panel is attached to. */
   @Input() position: DrawerPosition = DrawerPosition.Start;
@@ -40,12 +54,7 @@ export class DrawerComponent implements OnInit {
   /** Emits whenever the panel has started closing. */
   @Output() onClose = new EventEmitter();
 
-  constructor() { }
-
-  ngOnInit(): void {
-    this.isPositionStart = this.position === DrawerPosition.Start;
-    this.isPositionEnd = this.position === DrawerPosition.End;
-  }
+  constructor(private sanitizer: DomSanitizer) { }
 
   /** Open the drawer. */
   public open() {
