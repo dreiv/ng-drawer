@@ -8,3 +8,19 @@
   transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);
   z-index: 1;
 }
+
+header {
+  height: 50px;
+  transform-origin: 25px 50%;
+  will-change: transform;
+  transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);
+  background: red;
+
+  :host(.docked) & {
+    transform: rotate(90deg);
+  }
+
+  :host(.opened) & {
+    transform: inherit;
+  }
+}

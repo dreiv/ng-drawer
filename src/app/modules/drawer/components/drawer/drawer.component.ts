@@ -26,6 +26,7 @@ export class DrawerComponent {
 
   /** Whether the drawer is opened. */
   @Input()
+  @HostBinding('class.opened')
   get opened(): boolean {
     return this._opened;
   }
@@ -42,6 +43,7 @@ export class DrawerComponent {
 
   /** Whether the drawer is docked to the side of the container. */
   @Input()
+  @HostBinding('class.docked')
   get docked(): boolean {
     return this._docked;
   }
