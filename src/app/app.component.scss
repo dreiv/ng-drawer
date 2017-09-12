@@ -13,9 +13,17 @@ footer {
   background: lime;
   display: flex;
   justify-content: space-around;
-  padding: .5em;
+  overflow: hidden;
+  transition: max-height .3s cubic-bezier(0, 0, 0.3, 1);
+  max-height: 100px;
 
   button {
-    line-height: 3em;
+    line-height: 2em;
+    margin: 1em;
+    height: 100%;
+  }
+
+  &.hide {
+    max-height: 0;
   }
 }

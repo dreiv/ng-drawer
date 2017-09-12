@@ -10,6 +10,7 @@ import { DocumentService, FormFactor } from './services/document.service';
 export class AppComponent implements AfterViewInit {
   @ViewChildren(DrawerComponent) drawers: QueryList<DrawerComponent>;
   shouldDock = this.documentSpy$.formFactor$.getValue() !== FormFactor.PHONE;
+  hideFooter = this.documentSpy$.formFactor$.getValue() !== FormFactor.PHONE;
 
   constructor(private documentSpy$: DocumentService) {}
 
@@ -18,6 +19,9 @@ export class AppComponent implements AfterViewInit {
       .skip(1)
       .map(factor => factor !== FormFactor.PHONE)
       .distinctUntilChanged()
-      .subscribe(shouldDock => this.drawers.forEach(drawer => drawer.docked = shouldDock));
+      .subscribe((shouldDock: boolean) => {
+        this.drawers.forEach(drawer => drawer.docked = shouldDock);
+        this.hideFooter = shouldDock;
+      });
   }
 }
