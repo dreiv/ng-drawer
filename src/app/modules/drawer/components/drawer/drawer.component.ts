@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
-import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 
 export type DrawerPosition = 'start' | 'end';
 
@@ -21,8 +21,8 @@ export const DrawerPosition = {
   styleUrls: ['./drawer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DrawerComponent implements OnInit {
-  @HostBinding('style') private style: SafeStyle;
+export class DrawerComponent {
+  @HostBinding('style') private style;
 
   /** Whether the drawer is opened. */
   @Input()
@@ -72,10 +72,6 @@ export class DrawerComponent implements OnInit {
 
   constructor(private sanitizer: DomSanitizer) { }
 
-  ngOnInit(): void {
-    this.computeStyle();
-  }
-
   /** Open the drawer. */
   public open() {
     this.toggle(true);
@@ -94,33 +90,17 @@ export class DrawerComponent implements OnInit {
     this.opened = isOpen;
   }
 
-  private computeStyle() {
+  private computeStyle(): void {
     let transformStyle = `transform:`;
 
     if (!this.opened) {
-      switch (this.position) {
-        case DrawerPosition.Start:
-          transformStyle += `translateX(-100%)`;
-          break;
-        case DrawerPosition.End:
-          transformStyle += `translateX(100%)`;
-          break;
-      }
-      if (this.docked) {
-        switch (this.position) {
-          case DrawerPosition.Start:
-            transformStyle += ` translateX(${this.dockedSize})`;
-            break;
-          case DrawerPosition.End:
-            transformStyle += ` translateX(-${this.dockedSize})`;
-            break;
-        }
-      }
+      const isStart = this.position === DrawerPosition.Start;
+
+      transformStyle += `translateX(${isStart ? '-' : ''}100%)${this.docked ? ` translateX(${!isStart ? '-' : ''}${this.dockedSize}` : ''}`;
     } else {
       transformStyle += 'inherit';
     }
 
     this.style = this.sanitizer.bypassSecurityTrustStyle(transformStyle);
   }
-
 }
