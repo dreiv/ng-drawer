@@ -1,12 +1,12 @@
 <app-drawer-container #drawer>
   <app-drawer #spStart [docked]="shouldDock">
-    <h1>Start Panel</h1>
+    <drawer-header>Table of Contents</drawer-header>
 
     <button (click)="spStart.close()">Close me</button>
   </app-drawer>
 
   <app-drawer #spEnd [position]="'end'" [docked]="shouldDock">
-    <h1>End Panel</h1>
+    <drawer-header>Related Stuff</drawer-header>
 
     <button (click)="spEnd.close()">Close me</button>
   </app-drawer>
