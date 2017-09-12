@@ -12,15 +12,16 @@
 header {
   height: 50px;
   transform-origin: 25px 50%;
-  will-change: transform;
-  transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);
+  will-change: transform, width;
   background: red;
 
   :host(.docked) & {
     transform: rotate(90deg);
+    width: 100vh;
   }
 
   :host(.opened) & {
     transform: inherit;
+    width: inherit;
   }
 }
