@@ -15,7 +15,6 @@ export class AppComponent implements AfterViewInit {
     this._footer = footer;
 
     if (footer) {
-      // TODO: unsubscribe.
       footer.nativeElement.addEventListener('transitionend', () => {
         this.footerIsTransitioning = false;
       });
