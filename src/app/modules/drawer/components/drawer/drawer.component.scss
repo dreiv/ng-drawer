@@ -28,18 +28,12 @@
 
 header {
   height: 50px;
-  transform-origin: 25px 50%;
-  will-change: transform, width;
-  transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);
   background: red;
+  will-change: transform, width;
 
-  :host(.docked) & {
+  :host(.docked:not(.opened)) & {
+    transform-origin: 25px 50%;
     transform: rotate(90deg);
     width: 100vh;
-  }
-
-  :host(.opened) & {
-    transform: none;
-    width: inherit;
   }
 }

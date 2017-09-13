@@ -22,8 +22,6 @@ export const DrawerPosition = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DrawerComponent implements OnInit {
-  @HostBinding('style') private style;
-
   /** Whether the drawer is opened. */
   @Input()
   @HostBinding('class.opened')
