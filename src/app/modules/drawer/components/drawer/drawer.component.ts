@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
 export type DrawerPosition = 'start' | 'end';
@@ -21,7 +21,7 @@ export const DrawerPosition = {
   styleUrls: ['./drawer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DrawerComponent {
+export class DrawerComponent implements OnInit {
   @HostBinding('style') private style;
 
   /** Whether the drawer is opened. */
@@ -33,10 +33,13 @@ export class DrawerComponent {
 
   set opened(value: boolean) {
     this._opened = value;
-    this.computeStyle();
   }
 
   private _opened: boolean;
+
+  @HostBinding('class.start') private isStartPosition: boolean;
+
+  @HostBinding('class.end') private isEndPosition: boolean;
 
   /** The side that the panel is attached to. */
   @Input() position: DrawerPosition = DrawerPosition.Start;
@@ -51,7 +54,6 @@ export class DrawerComponent {
   set docked(value: boolean) {
     this._docked = value;
     this.onDockedStateChange.emit();
-    this.computeStyle();
   }
 
   private _docked: boolean;
@@ -60,6 +62,11 @@ export class DrawerComponent {
   @Output() onDockedStateChange = new EventEmitter();
 
   constructor(private sanitizer: DomSanitizer) { }
+
+  ngOnInit(): void {
+    this.isStartPosition = this.position === DrawerPosition.Start;
+    this.isEndPosition = this.position === DrawerPosition.End;
+  }
 
   /** Open the drawer. */
   public open() {
@@ -77,19 +84,5 @@ export class DrawerComponent {
    */
   toggle(isOpen: boolean = !this.opened) {
     this.opened = isOpen;
-  }
-
-  private computeStyle(): void {
-    let transformStyle = `transform:`;
-
-    if (!this.opened) {
-      const isStart = this.position === DrawerPosition.Start;
-
-      transformStyle += `translateX(${isStart ? '-' : ''}100%)${this.docked ? ` translateX(${!isStart ? '-' : ''}50px` : ''}`;
-    } else {
-      transformStyle += 'inherit';
-    }
-
-    this.style = this.sanitizer.bypassSecurityTrustStyle(transformStyle);
   }
 }
