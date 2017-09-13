@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, QueryList, ViewChildren } from '@angular/core';
 import { DrawerComponent } from './modules/drawer/components/drawer/drawer.component';
 import { DocumentService, FormFactor } from './services/document.service';
 
@@ -10,18 +10,6 @@ import { DocumentService, FormFactor } from './services/document.service';
 export class AppComponent implements AfterViewInit {
   @ViewChildren(DrawerComponent) drawers: QueryList<DrawerComponent>;
 
-  @ViewChild('footer')
-  set footer(footer: ElementRef) {
-    this._footer = footer;
-
-    if (footer) {
-      footer.nativeElement.addEventListener('transitionend', () => {
-        this.isFooterTransitioning = false;
-      });
-    }
-  }
-
-  private _footer: ElementRef;
   shouldDock = this.documentSpy$.formFactor$.getValue() !== FormFactor.PHONE;
   hideFooter = this.documentSpy$.formFactor$.getValue() !== FormFactor.PHONE;
   isFooterTransitioning: boolean;

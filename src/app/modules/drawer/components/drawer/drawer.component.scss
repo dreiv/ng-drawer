@@ -31,7 +31,7 @@ header {
   background: red;
   will-change: transform, width;
 
-  :host(.docked:not(.opened)) & {
+  :host(.spinned) & {
     transform-origin: 25px 50%;
     transform: rotate(90deg);
     width: 100vh;

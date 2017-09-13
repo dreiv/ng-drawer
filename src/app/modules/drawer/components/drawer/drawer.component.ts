@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, HostListener, Input, OnInit, Output } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
 export type DrawerPosition = 'start' | 'end';
@@ -51,6 +51,7 @@ export class DrawerComponent implements OnInit {
 
   set docked(value: boolean) {
     this._docked = value;
+    this.isHeaderSpinned = value;
     this.onDockedStateChange.emit();
   }
 
@@ -58,6 +59,15 @@ export class DrawerComponent implements OnInit {
 
   /** Emits whenever the drawer docked state changes. */
   @Output() onDockedStateChange = new EventEmitter();
+
+  @HostBinding('class.spinned')
+  isHeaderSpinned: boolean;
+
+  @HostListener('transitionend')
+  onTransitionEnd() {
+    // this.isHeaderSpinned = false;
+    console.log('transition ended');
+  }
 
   constructor(private sanitizer: DomSanitizer) { }
 

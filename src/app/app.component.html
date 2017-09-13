@@ -190,7 +190,8 @@
 
 </app-drawer-container>
 
-<footer [class.hide]="hideFooter" #footer *ngIf="!hideFooter || isFooterTransitioning">
+<footer [class.hide]="hideFooter" *ngIf="!hideFooter || isFooterTransitioning"
+        (transitionend)="isFooterTransitioning = false">
   <button (click)="spStart.toggle()">Table of Contents</button>
   <button (click)="spEnd.toggle()">Related Stuff</button>
 </footer>
