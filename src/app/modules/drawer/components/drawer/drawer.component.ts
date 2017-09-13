@@ -56,21 +56,8 @@ export class DrawerComponent {
 
   private _docked: boolean;
 
-  @Input()
-  get dockedSize(): string {
-    return this._dockedSize;
-  }
-
-  set dockedSize(value: string) {
-    this._dockedSize = value;
-    this.onDockedStateChange.emit();
-    this.computeStyle();
-  }
-
   /** Emits whenever the drawer docked state changes. */
   @Output() onDockedStateChange = new EventEmitter();
-
-  private _dockedSize = '50px';
 
   constructor(private sanitizer: DomSanitizer) { }
 
@@ -98,7 +85,7 @@ export class DrawerComponent {
     if (!this.opened) {
       const isStart = this.position === DrawerPosition.Start;
 
-      transformStyle += `translateX(${isStart ? '-' : ''}100%)${this.docked ? ` translateX(${!isStart ? '-' : ''}${this.dockedSize}` : ''}`;
+      transformStyle += `translateX(${isStart ? '-' : ''}100%)${this.docked ? ` translateX(${!isStart ? '-' : ''}50px` : ''}`;
     } else {
       transformStyle += 'inherit';
     }

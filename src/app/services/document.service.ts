@@ -7,25 +7,25 @@ export enum FormFactor { PHONE, TABLET, DESKTOP }
 
 @Injectable()
 export class DocumentService {
-  private windowResizeSpy$: Subject<void> = new Subject<void>();
-  formFactor$: BehaviorSubject<FormFactor> = new BehaviorSubject(this.getFormFactor());
+  private onResize$: Subject<number> = new Subject();
+  formFactor$: BehaviorSubject<FormFactor> = new BehaviorSubject(this.getFormFactor(window.innerWidth));
 
   constructor() {
-    Observable.fromEvent(window, 'resize')
-      .debounceTime(500)
-      .subscribe(() => this.windowResizeSpy$.next());
+    Observable.fromEvent<UIEvent>(window, 'resize')
+      .debounceTime(250)
+      .subscribe(() => {
+        this.onResize$.next(window.innerWidth);
+      });
 
-    this.windowResizeSpy$
-      .map(() => this.getFormFactor())
+    this.onResize$
+      .map(deviceWidth => this.getFormFactor(deviceWidth))
       .distinctUntilChanged()
       .subscribe((factor: FormFactor) => {
         this.formFactor$.next(factor);
       });
   }
 
-  private getFormFactor(): FormFactor {
-    const deviceWidth = window.innerWidth;
-
+  private getFormFactor(deviceWidth): FormFactor {
     if (deviceWidth < 768) {
       return FormFactor.PHONE;
     } else if (deviceWidth < 1200) {

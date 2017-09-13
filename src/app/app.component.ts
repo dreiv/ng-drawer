@@ -16,7 +16,7 @@ export class AppComponent implements AfterViewInit {
 
     if (footer) {
       footer.nativeElement.addEventListener('transitionend', () => {
-        this.footerIsTransitioning = false;
+        this.isFooterTransitioning = false;
       });
     }
   }
@@ -24,7 +24,7 @@ export class AppComponent implements AfterViewInit {
   private _footer: ElementRef;
   shouldDock = this.documentSpy$.formFactor$.getValue() !== FormFactor.PHONE;
   hideFooter = this.documentSpy$.formFactor$.getValue() !== FormFactor.PHONE;
-  footerIsTransitioning: boolean;
+  isFooterTransitioning: boolean;
 
   constructor(private documentSpy$: DocumentService) {}
 
@@ -35,7 +35,7 @@ export class AppComponent implements AfterViewInit {
       .distinctUntilChanged()
       .subscribe((shouldDock: boolean) => {
         this.drawers.forEach(drawer => drawer.docked = shouldDock);
-        this.footerIsTransitioning = true;
+        this.isFooterTransitioning = true;
         this.hideFooter = shouldDock;
       });
   }

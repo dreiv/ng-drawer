@@ -40,10 +40,10 @@ export class DrawerContainerComponent implements AfterContentInit {
     startWith.call(drawer.onDockedStateChange, null).subscribe(() => {
       switch (drawer.position) {
         case DrawerPosition.Start:
-          this.contentStyle.marginLeft = drawer.docked ? drawer.dockedSize : 'inherit';
+          this.contentStyle.marginLeft = drawer.docked ? '50px' : 'inherit';
           break;
         case DrawerPosition.End:
-          this.contentStyle.marginRight = drawer.docked ? drawer.dockedSize : 'inherit';
+          this.contentStyle.marginRight = drawer.docked ? '50px' : 'inherit';
           break;
       }
 
