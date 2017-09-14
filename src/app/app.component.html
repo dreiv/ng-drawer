@@ -1,9 +1,9 @@
 <app-drawer-container #drawer>
-  <!--<app-drawer #spStart [docked]="docked">-->
-  <!--<drawer-header>Table of Contents</drawer-header>-->
+  <app-drawer #spStart [docked]="docked">
+    <drawer-header>Table of Contents</drawer-header>
 
-  <!--<button (click)="spStart.close()">Close me</button>-->
-  <!--</app-drawer>-->
+    <button (click)="spStart.close()">Close me</button>
+  </app-drawer>
 
   <app-drawer #spEnd [position]="'end'" [docked]="docked">
     <drawer-header>Related Stuff</drawer-header>
@@ -192,6 +192,6 @@
 
 <footer [class.hide]="hideFooter" *ngIf="!hideFooter || isFooterTransitioning"
         (transitionend)="isFooterTransitioning = false">
-  <!--<button (click)="spStart.toggle()">Table of Contents</button>-->
+  <button (click)="spStart.toggle()">Table of Contents</button>
   <button (click)="spEnd.toggle()">Related Stuff</button>
 </footer>

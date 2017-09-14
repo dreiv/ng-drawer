@@ -36,4 +36,9 @@ header {
     transform: rotate(90deg);
     width: 100vh;
   }
+
+  :host(.spun.start) & {
+    position: absolute;
+    left: calc(100% - 50px);
+  }
 }
