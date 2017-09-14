@@ -30,8 +30,9 @@ header {
   height: 50px;
   background: red;
   will-change: transform, width;
+  transition: transform .3s cubic-bezier(0, 0, 0.3, 1);
 
-  &.spun {
+  :host(.spun) & {
     transform-origin: 25px 50%;
     transform: rotate(90deg);
     width: 100vh;

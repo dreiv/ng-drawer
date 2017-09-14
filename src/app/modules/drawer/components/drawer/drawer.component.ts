@@ -66,6 +66,7 @@ export class DrawerComponent implements OnInit {
   /** Emits whenever the drawer docked state changes. */
   @Output() onDockedStateChange = new EventEmitter();
 
+  @HostBinding('class.spun')
   isHeaderSpun: boolean;
 
   constructor() { }
