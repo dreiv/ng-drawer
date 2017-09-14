@@ -37,12 +37,26 @@ export class DrawerComponent implements OnInit {
 
   private _opened: boolean;
 
-  @HostBinding('class.start') private isStartPosition: boolean;
-
+  @HostBinding('class.start') private isStartPosition = true;
   @HostBinding('class.end') private isEndPosition: boolean;
 
   /** The side that the panel is attached to. */
-  @Input() position: DrawerPosition = DrawerPosition.Start;
+  @Input()
+  get position(): DrawerPosition {
+    return this._position;
+  }
+
+  set position(value: DrawerPosition) {
+    this.isStartPosition = value === DrawerPosition.Start;
+    this.isEndPosition = value === DrawerPosition.End;
+
+    this._position = value;
+  }
+
+  private _position: DrawerPosition = DrawerPosition.Start;
+
+  /** Emits whenever the drawer docked state changes. */
+  @Output() onDockedStateChange = new EventEmitter();
 
   /** Whether the drawer is docked to the side of the container. */
   @Input()
@@ -53,8 +67,7 @@ export class DrawerComponent implements OnInit {
 
   set docked(value: boolean) {
     this._docked = value;
-    // TODO: refactor this.
-    if (value) {
+    if (!this.opened && value) {
       this.isHeaderSpun = value;
     }
 
@@ -62,9 +75,6 @@ export class DrawerComponent implements OnInit {
   }
 
   private _docked: boolean;
-
-  /** Emits whenever the drawer docked state changes. */
-  @Output() onDockedStateChange = new EventEmitter();
 
   isHeaderSpun: boolean;
 
@@ -75,11 +85,11 @@ export class DrawerComponent implements OnInit {
     }
   }
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
-    this.isStartPosition = this.position === DrawerPosition.Start;
-    this.isEndPosition = this.position === DrawerPosition.End;
+    this.isStartPosition = this._position === DrawerPosition.Start;
+    this.isEndPosition = this._position === DrawerPosition.End;
   }
 
   /** Open the drawer. */
