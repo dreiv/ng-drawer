@@ -51,13 +51,6 @@ export class DrawerComponent implements OnInit {
     return this._docked;
   }
 
-  @HostListener('transitionend')
-  onTransitionEnd() {
-    if (!this.docked) {
-      this.isHeaderSpun = false;
-    }
-  }
-
   set docked(value: boolean) {
     this._docked = value;
     // TODO: refactor this.
@@ -73,8 +66,14 @@ export class DrawerComponent implements OnInit {
   /** Emits whenever the drawer docked state changes. */
   @Output() onDockedStateChange = new EventEmitter();
 
-  @HostBinding('class.spun')
   isHeaderSpun: boolean;
+
+  @HostListener('transitionend')
+  onTransitionEnd() {
+    if (!this.docked) {
+      this.isHeaderSpun = false;
+    }
+  }
 
   constructor() { }
 
