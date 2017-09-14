@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, HostListener, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
 
 export type DrawerPosition = 'start' | 'end';
 
@@ -29,6 +29,9 @@ export class DrawerComponent implements OnInit {
   }
 
   set opened(value: boolean) {
+    if (this.docked) {
+      this.isHeaderSpun = !value;
+    }
     this._opened = value;
   }
 
@@ -63,16 +66,7 @@ export class DrawerComponent implements OnInit {
   /** Emits whenever the drawer docked state changes. */
   @Output() onDockedStateChange = new EventEmitter();
 
-  @HostBinding('class.spun')
   isHeaderSpun: boolean;
-
-  @HostListener('transitionend')
-  onTransitionEnd() {
-    if (this.isHeaderSpun) {
-      this.isHeaderSpun = false;
-    }
-    console.log('transition ended');
-  }
 
   constructor() { }
 

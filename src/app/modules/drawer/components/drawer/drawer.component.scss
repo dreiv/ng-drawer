@@ -31,7 +31,7 @@ header {
   background: red;
   will-change: transform, width;
 
-  :host(.spun) & {
+  &.spun {
     transform-origin: 25px 50%;
     transform: rotate(90deg);
     width: 100vh;
