@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, HostListener, Input, OnInit, Output } from '@angular/core';
 
 export type DrawerPosition = 'start' | 'end';
 
@@ -51,9 +51,19 @@ export class DrawerComponent implements OnInit {
     return this._docked;
   }
 
+  @HostListener('transitionend')
+  onTransitionEnd() {
+    if (!this.docked) {
+      this.isHeaderSpun = false;
+    }
+  }
+
   set docked(value: boolean) {
     this._docked = value;
-    this.isHeaderSpun = value;
+    // TODO: refactor this.
+    if (value) {
+      this.isHeaderSpun = value;
+    }
 
     this.onDockedStateChange.emit();
   }
