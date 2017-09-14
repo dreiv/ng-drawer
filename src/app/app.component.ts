@@ -20,9 +20,9 @@ export class AppComponent implements AfterViewInit {
     this.documentSpy$.formFactor$
       .skip(1)
       .map(factor => factor !== FormFactor.PHONE)
-      .distinctUntilChanged()
+      .filter(shouldDock => shouldDock !== this.shouldDock)
       .subscribe((shouldDock: boolean) => {
-        this.drawers.forEach(drawer => drawer.docked = shouldDock);
+        this.shouldDock = shouldDock;
         this.isFooterTransitioning = true;
         this.hideFooter = shouldDock;
       });
