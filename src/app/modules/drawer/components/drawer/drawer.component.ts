@@ -53,10 +53,7 @@ export class DrawerComponent implements OnInit {
 
   set docked(value: boolean) {
     this._docked = value;
-
-    if (value === true) {
-      this.isHeaderSpun = value;
-    }
+    this.isHeaderSpun = value;
 
     this.onDockedStateChange.emit();
   }

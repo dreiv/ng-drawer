@@ -10,7 +10,7 @@ import { DocumentService, FormFactor } from './services/document.service';
 export class AppComponent implements AfterViewInit {
   @ViewChildren(DrawerComponent) drawers: QueryList<DrawerComponent>;
 
-  shouldDock = this.documentSpy$.formFactor$.getValue() !== FormFactor.PHONE;
+  docked = this.documentSpy$.formFactor$.getValue() !== FormFactor.PHONE;
   hideFooter = this.documentSpy$.formFactor$.getValue() !== FormFactor.PHONE;
   isFooterTransitioning: boolean;
 
@@ -18,13 +18,8 @@ export class AppComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.documentSpy$.formFactor$
-      .skip(1)
       .map(factor => factor !== FormFactor.PHONE)
-      .filter(shouldDock => shouldDock !== this.shouldDock)
-      .subscribe((shouldDock: boolean) => {
-        this.shouldDock = shouldDock;
-        this.isFooterTransitioning = true;
-        this.hideFooter = shouldDock;
-      });
+      .filter(shouldDock => shouldDock !== this.docked)
+      .subscribe(shouldDock => this.docked = this.isFooterTransitioning = this.hideFooter = shouldDock);
   }
 }
