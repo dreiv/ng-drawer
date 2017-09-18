@@ -1,5 +1,7 @@
 <header [class.spun]="isHeaderSpun">
   <button (click)="toggle()"><></button>
-  <ng-content select="drawer-header"></ng-content>
+  <span class="header-text">
+    <ng-content select="drawer-header"></ng-content>
+  </span>
 </header>
 <ng-content></ng-content>

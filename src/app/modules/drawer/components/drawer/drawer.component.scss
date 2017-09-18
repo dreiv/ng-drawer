@@ -47,6 +47,11 @@ header {
     :host(.start) & {
       position: absolute;
       left: calc(100% - 50px);
+
+      .header-text {
+        transform: rotate(180deg);
+        display: inline-block;
+      }
     }
   }
 }
