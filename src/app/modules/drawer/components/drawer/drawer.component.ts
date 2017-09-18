@@ -7,6 +7,13 @@ export const DrawerPosition = {
   End: 'end' as DrawerPosition
 };
 
+export type DrawerOverlayMode = 'over' | 'push';
+
+export const DrawerMode = {
+  Over: 'over' as DrawerOverlayMode,
+  Push: 'push' as DrawerOverlayMode
+};
+
 /**
  * <app-drawer>
  *
@@ -75,6 +82,21 @@ export class DrawerComponent implements OnInit {
   }
 
   private _docked: boolean;
+
+  @Output() onModeStateChange = new EventEmitter();
+
+  @Input()
+  get mode(): DrawerOverlayMode {
+    return this._mode;
+  }
+
+  set mode(value: DrawerOverlayMode) {
+    this._mode = value;
+
+    this.onModeStateChange.emit();
+  }
+
+  private _mode: DrawerOverlayMode;
 
   @Input()
   @HostBinding('style.width')

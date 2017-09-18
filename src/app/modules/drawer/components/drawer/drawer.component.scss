@@ -36,8 +36,16 @@
 
 header {
   height: 50px;
-  background: red;
+  background: wheat;
   will-change: transform, width;
+  display: flex;
+  align-items: center;
+
+  &:not(.spun) {
+    :host(.start) & {
+      direction: rtl;
+    }
+  }
 
   &.spun {
     transform-origin: 25px 50%;
@@ -53,5 +61,9 @@ header {
         display: inline-block;
       }
     }
+  }
+
+  button {
+    margin: 1em;
   }
 }
