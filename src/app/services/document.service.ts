@@ -26,11 +26,11 @@ export class DocumentService {
   }
 
   private getFormFactor(deviceWidth): FormFactor {
-    if (deviceWidth < 576) {
+    if (deviceWidth < 768) {
       return FormFactor.SMALL;
-    } else if (deviceWidth < 768) {
-      return FormFactor.MEDIUM;
     } else if (deviceWidth < 1200) {
+      return FormFactor.MEDIUM;
+    } else if (deviceWidth < 1600) {
       return FormFactor.LARGE;
     } else {
       return FormFactor.EXTRALARGE;
