@@ -10,14 +10,14 @@ import { DocumentService, FormFactor } from './services/document.service';
 export class AppComponent implements AfterViewInit {
   @ViewChildren(DrawerComponent) drawers: QueryList<DrawerComponent>;
 
-  docked = this.documentSpy$.formFactor$.getValue() !== FormFactor.PHONE;
-  hideFooter = this.documentSpy$.formFactor$.getValue() !== FormFactor.PHONE;
+  docked = this.document$.formFactor$.getValue() !== FormFactor.PHONE;
+  hideFooter = this.document$.formFactor$.getValue() !== FormFactor.PHONE;
   isFooterTransitioning: boolean;
 
-  constructor(private documentSpy$: DocumentService) {}
+  constructor(private document$: DocumentService) {}
 
   ngAfterViewInit(): void {
-    this.documentSpy$.formFactor$
+    this.document$.formFactor$
       .map(factor => factor !== FormFactor.PHONE)
       .filter(shouldDock => shouldDock !== this.docked)
       .subscribe(shouldDock => this.docked = this.isFooterTransitioning = this.hideFooter = shouldDock);
