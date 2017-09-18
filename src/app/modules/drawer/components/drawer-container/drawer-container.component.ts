@@ -1,4 +1,13 @@
-import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, QueryList } from '@angular/core';
+import {
+  AfterContentInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ContentChildren,
+  HostBinding,
+  HostListener,
+  QueryList
+} from '@angular/core';
 import { startWith } from 'rxjs/operator/startWith';
 import { DrawerComponent, DrawerMode, DrawerPosition } from '../drawer/drawer.component';
 
@@ -18,6 +27,18 @@ export class DrawerContainerComponent implements AfterContentInit {
   @ContentChildren(DrawerComponent) drawers: QueryList<DrawerComponent>;
 
   contentStyle: CSSStyleDeclaration = {} as CSSStyleDeclaration;
+
+  @HostBinding('class.backdrop') private hasBackdrop;
+
+  /** The drawer child that is currently opened. */
+  private active: DrawerComponent;
+
+  @HostListener('click', ['$event'])
+  onClick(event: Event) {
+    if (this.hasBackdrop && !this.active.el().nativeElement.contains(event.target)) {
+      this.active.close();
+    }
+  }
 
   constructor(private ref: ChangeDetectorRef) { }
 
@@ -42,10 +63,10 @@ export class DrawerContainerComponent implements AfterContentInit {
       if (drawer.opened && drawer.mode === DrawerMode.Push) {
         switch (drawer.position) {
           case DrawerPosition.Start:
-            this.contentStyle.marginLeft = drawer.docked ? drawer.clientWidth + 'px' : undefined;
+            this.contentStyle.marginLeft = drawer.docked ? drawer.width : undefined;
             break;
           case DrawerPosition.End:
-            this.contentStyle.marginRight = drawer.docked ? drawer.clientWidth + 'px' : undefined;
+            this.contentStyle.marginRight = drawer.docked ? drawer.width : undefined;
             break;
         }
       } else {
@@ -59,7 +80,11 @@ export class DrawerContainerComponent implements AfterContentInit {
         }
       }
 
+      this.active = drawer.opened && drawer.mode === DrawerMode.Over ? drawer : undefined;
+      this.hasBackdrop = this.active;
+
       this.ref.markForCheck();
     });
+
   }
 }

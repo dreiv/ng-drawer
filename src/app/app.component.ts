@@ -30,6 +30,8 @@ export class AppComponent implements AfterViewInit {
     this.document$.formFactor$
       .filter(formFactor => formFactor !== this.formFactor)
       .subscribe(formFactor => {
+        this.formFactor = formFactor;
+
         this.docked = this.setDrawerDocked(formFactor);
         this.hideFooter = !this.showFooter(formFactor);
         this.width = this.setDrawerWidth(formFactor);

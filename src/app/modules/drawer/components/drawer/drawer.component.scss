@@ -9,6 +9,10 @@
   top: 0;
   bottom: 0;
 
+  &.opened {
+    z-index: 1;
+  }
+
   &.start {
     left: 0;
 

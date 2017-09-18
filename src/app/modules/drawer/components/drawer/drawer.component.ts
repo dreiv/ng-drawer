@@ -120,10 +120,6 @@ export class DrawerComponent implements OnInit {
 
   private _width: string;
 
-  get clientWidth(): number {
-    return this.el.nativeElement.clientWidth;
-  }
-
   isHeaderSpun: boolean;
 
   @HostListener('transitionend')
@@ -133,7 +129,11 @@ export class DrawerComponent implements OnInit {
     }
   }
 
-  constructor(private el: ElementRef) {}
+  constructor(private elRef: ElementRef) {}
+
+  public el(): ElementRef {
+    return this.elRef;
+  }
 
   ngOnInit(): void {
     this.isStartPosition = this._position === DrawerPosition.Start;
