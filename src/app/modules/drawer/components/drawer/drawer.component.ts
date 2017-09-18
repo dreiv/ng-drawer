@@ -76,6 +76,18 @@ export class DrawerComponent implements OnInit {
 
   private _docked: boolean;
 
+  @Input()
+  @HostBinding('style.width')
+  get width(): string {
+    return this._width;
+  }
+
+  set width(value: string) {
+    this._width = value;
+  }
+
+  private _width: string;
+
   isHeaderSpun: boolean;
 
   @HostListener('transitionend')

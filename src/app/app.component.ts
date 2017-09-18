@@ -10,16 +10,28 @@ import { DocumentService, FormFactor } from './services/document.service';
 export class AppComponent implements AfterViewInit {
   @ViewChildren(DrawerComponent) drawers: QueryList<DrawerComponent>;
 
-  docked = this.document$.formFactor$.getValue() !== FormFactor.PHONE;
-  hideFooter = this.document$.formFactor$.getValue() !== FormFactor.PHONE;
+  width: string;
+  docked: boolean;
+  hideFooter: boolean;
   isFooterTransitioning: boolean;
 
-  constructor(private document$: DocumentService) {}
+  constructor(private document$: DocumentService) {
+    this.docked = this.document$.formFactor$.getValue() !== FormFactor.PHONE;
+    this.hideFooter = this.docked;
+    this.width = this.setDrawerWidth(this.docked);
+  }
 
   ngAfterViewInit(): void {
     this.document$.formFactor$
       .map(factor => factor !== FormFactor.PHONE)
       .filter(shouldDock => shouldDock !== this.docked)
-      .subscribe(shouldDock => this.docked = this.isFooterTransitioning = this.hideFooter = shouldDock);
+      .subscribe(shouldDock => {
+        this.docked = this.isFooterTransitioning = this.hideFooter = shouldDock;
+        this.width = this.setDrawerWidth(shouldDock);
+      });
+  }
+
+  private setDrawerWidth(shouldDock: boolean): string {
+    return shouldDock ? '400px' : undefined;
   }
 }

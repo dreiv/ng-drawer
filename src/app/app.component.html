@@ -155,13 +155,13 @@
       tincidunt et, tincidunt eget, semper nec, quam. Sed hendrerit. Morbi ac felis.</p>
   </div>
 
-  <app-drawer #spStart [docked]="docked">
+  <app-drawer #spStart [docked]="docked" [width]="width">
     <drawer-header>Table of Contents</drawer-header>
 
     <button (click)="spStart.close()">Close me</button>
   </app-drawer>
 
-  <app-drawer #spEnd [position]="'end'" [docked]="docked">
+  <app-drawer #spEnd [position]="'end'" [docked]="docked" [width]="width">
     <drawer-header>Related Stuff</drawer-header>
 
     <ul>

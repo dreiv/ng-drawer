@@ -4,8 +4,8 @@
   width: 100%;
   display: block;
   position: absolute;
-  will-change: transform;
-  transition: transform .3s cubic-bezier(0, 0, 0.3, 1);
+  will-change: transform, width;
+  transition: all .3s cubic-bezier(0, 0, 0.3, 1);
   top: 0;
   bottom: 0;
 
