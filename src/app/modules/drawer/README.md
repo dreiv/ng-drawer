@@ -1,4 +1,4 @@
-# Drawer
+# Drawer (To be updated)
 
 The `<app-drawer>` component is a panel that can be placed on the side of some primary content.
 It can contain any content. 

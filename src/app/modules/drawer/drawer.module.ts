@@ -4,9 +4,7 @@ import { DrawerContainerComponent } from './components/drawer-container/drawer-c
 import { DrawerComponent } from './components/drawer/drawer.component';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
   declarations: [
     DrawerComponent,
     DrawerContainerComponent

@@ -6,9 +6,7 @@ import { DrawerModule } from './modules/drawer/drawer.module';
 import { DocumentService } from './services/document.service';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     DrawerModule
