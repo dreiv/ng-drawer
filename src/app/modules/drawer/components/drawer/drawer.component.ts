@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, HostListener, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  HostListener,
+  Input,
+  OnInit,
+  Output
+} from '@angular/core';
 
 export type DrawerPosition = 'start' | 'end';
 
@@ -7,11 +17,11 @@ export const DrawerPosition = {
   End: 'end' as DrawerPosition
 };
 
-export type DrawerOverlayMode = 'over' | 'push';
+export type DrawerMode = 'over' | 'push';
 
 export const DrawerMode = {
-  Over: 'over' as DrawerOverlayMode,
-  Push: 'push' as DrawerOverlayMode
+  Over: 'over' as DrawerMode,
+  Push: 'push' as DrawerMode
 };
 
 /**
@@ -28,6 +38,9 @@ export const DrawerMode = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DrawerComponent implements OnInit {
+  /** Emits whenever the drawer state changes. */
+  @Output() onStateChange = new EventEmitter();
+
   /** Whether the drawer is opened. */
   @Input()
   @HostBinding('class.opened')
@@ -40,6 +53,8 @@ export class DrawerComponent implements OnInit {
       this.isHeaderSpun = !value;
     }
     this._opened = value;
+
+    this.onStateChange.emit();
   }
 
   private _opened: boolean;
@@ -62,9 +77,6 @@ export class DrawerComponent implements OnInit {
 
   private _position: DrawerPosition = DrawerPosition.Start;
 
-  /** Emits whenever the drawer docked state changes. */
-  @Output() onDockedStateChange = new EventEmitter();
-
   /** Whether the drawer is docked to the side of the container. */
   @Input()
   @HostBinding('class.docked')
@@ -78,25 +90,23 @@ export class DrawerComponent implements OnInit {
       this.isHeaderSpun = value;
     }
 
-    this.onDockedStateChange.emit();
+    this.onStateChange.emit();
   }
 
   private _docked: boolean;
 
-  @Output() onModeStateChange = new EventEmitter();
-
   @Input()
-  get mode(): DrawerOverlayMode {
+  get mode(): DrawerMode {
     return this._mode;
   }
 
-  set mode(value: DrawerOverlayMode) {
+  set mode(value: DrawerMode) {
     this._mode = value;
 
-    this.onModeStateChange.emit();
+    this.onStateChange.emit();
   }
 
-  private _mode: DrawerOverlayMode;
+  private _mode: DrawerMode = DrawerMode.Over;
 
   @Input()
   @HostBinding('style.width')
@@ -110,6 +120,10 @@ export class DrawerComponent implements OnInit {
 
   private _width: string;
 
+  get clientWidth(): number {
+    return this.el.nativeElement.clientWidth;
+  }
+
   isHeaderSpun: boolean;
 
   @HostListener('transitionend')
@@ -119,7 +133,7 @@ export class DrawerComponent implements OnInit {
     }
   }
 
-  constructor() {}
+  constructor(private el: ElementRef) {}
 
   ngOnInit(): void {
     this.isStartPosition = this._position === DrawerPosition.Start;

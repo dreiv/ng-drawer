@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, QueryList, ViewChildren } from '@angular/core';
-import { DrawerComponent } from './modules/drawer/components/drawer/drawer.component';
+import { DrawerComponent, DrawerMode } from './modules/drawer/components/drawer/drawer.component';
 import { DocumentService, FormFactor } from './services/document.service';
 
 @Component({
@@ -12,6 +12,7 @@ export class AppComponent implements AfterViewInit {
 
   width: string;
   docked: boolean;
+  mode: DrawerMode;
   hideFooter: boolean;
   isFooterTransitioning: boolean;
 
@@ -19,6 +20,7 @@ export class AppComponent implements AfterViewInit {
     this.docked = this.document$.formFactor$.getValue() !== FormFactor.PHONE;
     this.hideFooter = this.docked;
     this.width = this.setDrawerWidth(this.docked);
+    this.mode = this.setDrawerMode(this.docked);
   }
 
   ngAfterViewInit(): void {
@@ -28,10 +30,15 @@ export class AppComponent implements AfterViewInit {
       .subscribe(shouldDock => {
         this.docked = this.isFooterTransitioning = this.hideFooter = shouldDock;
         this.width = this.setDrawerWidth(shouldDock);
+        this.mode = this.setDrawerMode(shouldDock);
       });
   }
 
   private setDrawerWidth(shouldDock: boolean): string {
     return shouldDock ? '400px' : undefined;
+  }
+
+  private setDrawerMode(shouldDock: boolean): DrawerMode {
+    return shouldDock ? DrawerMode.Push : DrawerMode.Over;
   }
 }

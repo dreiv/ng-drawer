@@ -1,6 +1,6 @@
 import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, QueryList } from '@angular/core';
 import { startWith } from 'rxjs/operator/startWith';
-import { DrawerComponent, DrawerPosition } from '../drawer/drawer.component';
+import { DrawerComponent, DrawerMode, DrawerPosition } from '../drawer/drawer.component';
 
 /**
  * <app-drawer-container>
@@ -37,14 +37,26 @@ export class DrawerContainerComponent implements AfterContentInit {
 
   /** Actions done on panel events. */
   private watch(drawer: DrawerComponent): void {
-    startWith.call(drawer.onDockedStateChange, null).subscribe(() => {
-      switch (drawer.position) {
-        case DrawerPosition.Start:
-          this.contentStyle.marginLeft = drawer.docked ? '50px' : undefined;
-          break;
-        case DrawerPosition.End:
-          this.contentStyle.marginRight = drawer.docked ? '50px' : undefined;
-          break;
+    startWith.call(drawer.onStateChange, null).subscribe(() => {
+
+      if (drawer.opened && drawer.mode === DrawerMode.Push) {
+        switch (drawer.position) {
+          case DrawerPosition.Start:
+            this.contentStyle.marginLeft = drawer.docked ? drawer.clientWidth + 'px' : undefined;
+            break;
+          case DrawerPosition.End:
+            this.contentStyle.marginRight = drawer.docked ? drawer.clientWidth + 'px' : undefined;
+            break;
+        }
+      } else {
+        switch (drawer.position) {
+          case DrawerPosition.Start:
+            this.contentStyle.marginLeft = drawer.docked ? '50px' : undefined;
+            break;
+          case DrawerPosition.End:
+            this.contentStyle.marginRight = drawer.docked ? '50px' : undefined;
+            break;
+        }
       }
 
       this.ref.markForCheck();
