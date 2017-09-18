@@ -10,6 +10,7 @@ import { DocumentService, FormFactor } from './services/document.service';
 export class AppComponent implements AfterViewInit {
   @ViewChildren(DrawerComponent) drawers: QueryList<DrawerComponent>;
 
+  private formFactor: FormFactor;
   width: string;
   docked: boolean;
   mode: DrawerMode;
@@ -17,28 +18,38 @@ export class AppComponent implements AfterViewInit {
   isFooterTransitioning: boolean;
 
   constructor(private document$: DocumentService) {
-    this.docked = this.document$.formFactor$.getValue() !== FormFactor.PHONE;
-    this.hideFooter = this.docked;
-    this.width = this.setDrawerWidth(this.docked);
-    this.mode = this.setDrawerMode(this.docked);
+    this.formFactor = this.document$.formFactor$.getValue();
+
+    this.docked = this.setDrawerDocked(this.formFactor);
+    this.hideFooter = !this.showFooter(this.formFactor);
+    this.width = this.setDrawerWidth(this.formFactor);
+    this.mode = this.setDrawerMode(this.formFactor);
   }
 
   ngAfterViewInit(): void {
     this.document$.formFactor$
-      .map(factor => factor !== FormFactor.PHONE)
-      .filter(shouldDock => shouldDock !== this.docked)
-      .subscribe(shouldDock => {
-        this.docked = this.isFooterTransitioning = this.hideFooter = shouldDock;
-        this.width = this.setDrawerWidth(shouldDock);
-        this.mode = this.setDrawerMode(shouldDock);
+      .filter(formFactor => formFactor !== this.formFactor)
+      .subscribe(formFactor => {
+        this.docked = this.setDrawerDocked(formFactor);
+        this.hideFooter = !this.showFooter(formFactor);
+        this.width = this.setDrawerWidth(formFactor);
+        this.mode = this.setDrawerMode(formFactor);
       });
   }
 
-  private setDrawerWidth(shouldDock: boolean): string {
-    return shouldDock ? '400px' : undefined;
+  private setDrawerDocked(formFactor: FormFactor): boolean {
+    return formFactor === FormFactor.MEDIUM || formFactor === FormFactor.LARGE;
   }
 
-  private setDrawerMode(shouldDock: boolean): DrawerMode {
-    return shouldDock ? DrawerMode.Push : DrawerMode.Over;
+  private showFooter(formFactor: FormFactor): boolean {
+    return formFactor === FormFactor.SMALL;
+  }
+
+  private setDrawerWidth(formFactor: FormFactor): string {
+    return formFactor === FormFactor.MEDIUM || formFactor === FormFactor.LARGE ? '400px' : undefined;
+  }
+
+  private setDrawerMode(formFactor: FormFactor): DrawerMode {
+    return formFactor === FormFactor.LARGE ? DrawerMode.Push : DrawerMode.Over;
   }
 }

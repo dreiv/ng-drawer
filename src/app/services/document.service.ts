@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
 
-export enum FormFactor { PHONE, TABLET, DESKTOP }
+export enum FormFactor { SMALL, MEDIUM, LARGE, EXTRALARGE }
 
 @Injectable()
 export class DocumentService {
@@ -26,12 +26,14 @@ export class DocumentService {
   }
 
   private getFormFactor(deviceWidth): FormFactor {
-    if (deviceWidth < 768) {
-      return FormFactor.PHONE;
+    if (deviceWidth < 576) {
+      return FormFactor.SMALL;
+    } else if (deviceWidth < 768) {
+      return FormFactor.MEDIUM;
     } else if (deviceWidth < 1200) {
-      return FormFactor.TABLET;
+      return FormFactor.LARGE;
     } else {
-      return FormFactor.DESKTOP;
+      return FormFactor.EXTRALARGE;
     }
   }
 
