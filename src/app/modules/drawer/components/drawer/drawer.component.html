@@ -4,7 +4,7 @@
 
 <ng-template #drawer>
   <header [class.spun]="isHeaderSpun">
-    <button (click)="toggle()"><></button>
+    <button *ngIf="!isSideMode" (click)="toggle()"><></button>
     <span class="header-text">
     <ng-content select="drawer-header"></ng-content>
   </span>
