@@ -44,7 +44,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   private setDrawerDocked(formFactor: FormFactor): boolean {
-    return formFactor === FormFactor.M || formFactor === FormFactor.L;
+    return this.isMediumOrLarge(formFactor);
   }
 
   private _showFooter(formFactor: FormFactor): boolean {
@@ -52,10 +52,14 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   private setDrawerWidth(formFactor: FormFactor): string {
-    return formFactor === FormFactor.M || formFactor === FormFactor.L ? '400px' : undefined;
+    return this.isMediumOrLarge(formFactor) ? '20rem' : null;
   }
 
   private setDrawerMode(formFactor: FormFactor): DrawerMode {
     return formFactor === FormFactor.L ? DrawerMode.Push : DrawerMode.Over;
+  }
+
+  private isMediumOrLarge(formFactor: FormFactor): boolean {
+    return formFactor === FormFactor.M || formFactor === FormFactor.L;
   }
 }

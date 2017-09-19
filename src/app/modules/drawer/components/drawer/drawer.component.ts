@@ -17,11 +17,12 @@ export const DrawerPosition = {
   End: 'end' as DrawerPosition
 };
 
-export type DrawerMode = 'over' | 'push';
+export type DrawerMode = 'over' | 'push' | 'side';
 
 export const DrawerMode = {
   Over: 'over' as DrawerMode,
-  Push: 'push' as DrawerMode
+  Push: 'push' as DrawerMode,
+  Side: 'side' as DrawerMode
 };
 
 /**
@@ -52,6 +53,8 @@ export class DrawerComponent implements OnInit {
     if (this.docked) {
       this.isHeaderSpun = !value;
     }
+    this.zIndex = value && this.mode === DrawerMode.Over ? '1' : null;
+
     this._opened = value;
 
     this.onStateChange.emit();
@@ -95,6 +98,9 @@ export class DrawerComponent implements OnInit {
 
   private _docked: boolean;
 
+  @HostBinding('style.z-index')
+  private zIndex: string;
+
   @Input()
   get mode(): DrawerMode {
     return this._mode;
@@ -131,7 +137,7 @@ export class DrawerComponent implements OnInit {
 
   constructor(private elRef: ElementRef) {}
 
-  public el(): ElementRef {
+  public getElRef(): ElementRef {
     return this.elRef;
   }
 

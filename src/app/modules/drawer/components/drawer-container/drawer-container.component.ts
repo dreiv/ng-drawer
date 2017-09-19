@@ -35,7 +35,7 @@ export class DrawerContainerComponent implements AfterContentInit {
 
   @HostListener('click', ['$event'])
   private onClick(event: Event) {
-    if (this.hasBackdrop && !this.active.el().nativeElement.contains(event.target)) {
+    if (this.hasBackdrop && !this.active.getElRef().nativeElement.contains(event.target)) {
       this.active.close();
     }
   }

@@ -8,11 +8,7 @@
   transition: all .3s cubic-bezier(0, 0, 0.3, 1);
   top: 0;
   bottom: 0;
-
-  &.opened {
-    z-index: 1;
-  }
-
+  
   &.start {
     left: 0;
 
