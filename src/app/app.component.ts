@@ -56,7 +56,14 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   private setDrawerMode(formFactor: FormFactor): DrawerMode {
-    return formFactor === FormFactor.L ? DrawerMode.Push : DrawerMode.Over;
+    switch (formFactor) {
+      case FormFactor.XL:
+        return DrawerMode.Side;
+      case FormFactor.L:
+        return DrawerMode.Push;
+      default:
+        return DrawerMode.Over;
+    }
   }
 
   private isMediumOrLarge(formFactor: FormFactor): boolean {

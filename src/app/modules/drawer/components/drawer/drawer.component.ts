@@ -53,7 +53,6 @@ export class DrawerComponent implements OnInit {
     if (this.docked) {
       this.isHeaderSpun = !value;
     }
-    this.zIndex = value && this.mode === DrawerMode.Over ? '1' : null;
 
     this._opened = value;
 
@@ -72,9 +71,7 @@ export class DrawerComponent implements OnInit {
   }
 
   set position(value: DrawerPosition) {
-    this.isStartPosition = value === DrawerPosition.Start;
-    this.isEndPosition = value === DrawerPosition.End;
-
+    this.handlePositionClasses();
     this._position = value;
   }
 
@@ -98,8 +95,9 @@ export class DrawerComponent implements OnInit {
 
   private _docked: boolean;
 
-  @HostBinding('style.z-index')
-  private zIndex: string;
+  @HostBinding('class.over') private isOverMode = true;
+  @HostBinding('class.push') private isPushMode: boolean;
+  @HostBinding('class.side') private isSideMode: boolean;
 
   @Input()
   get mode(): DrawerMode {
@@ -109,6 +107,7 @@ export class DrawerComponent implements OnInit {
   set mode(value: DrawerMode) {
     this._mode = value;
 
+    this.handleModeClasses();
     this.onStateChange.emit();
   }
 
@@ -142,8 +141,8 @@ export class DrawerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isStartPosition = this._position === DrawerPosition.Start;
-    this.isEndPosition = this._position === DrawerPosition.End;
+    this.handlePositionClasses();
+    this.handleModeClasses();
   }
 
   /** Open the drawer. */
@@ -162,5 +161,17 @@ export class DrawerComponent implements OnInit {
    */
   toggle(isOpen: boolean = !this.opened) {
     this.opened = isOpen;
+  }
+
+  // Helpers
+  handlePositionClasses(): void {
+    this.isStartPosition = this._position === DrawerPosition.Start;
+    this.isEndPosition = this._position === DrawerPosition.End;
+  }
+
+  handleModeClasses(): void {
+    this.isOverMode = this._mode === DrawerMode.Over;
+    this.isPushMode = this._mode === DrawerMode.Push;
+    this.isSideMode = this._mode === DrawerMode.Side;
   }
 }
