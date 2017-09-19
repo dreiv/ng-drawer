@@ -1,13 +1,7 @@
-<aside *ngIf="isSideMode; else drawer" class="side">
-  <ng-template [ngTemplateOutlet]="drawer"></ng-template>
-</aside>
-
-<ng-template #drawer>
-  <header [class.spun]="isHeaderSpun">
-    <button *ngIf="!isSideMode" (click)="toggle()"><></button>
-    <span class="header-text">
+<header [class.spun]="isHeaderSpun">
+  <button *ngIf="!isSideMode" (click)="toggle()"><></button>
+  <span class="header-text">
     <ng-content select="drawer-header"></ng-content>
   </span>
-  </header>
-  <ng-content></ng-content>
-</ng-template>
+</header>
+<ng-content></ng-content>
