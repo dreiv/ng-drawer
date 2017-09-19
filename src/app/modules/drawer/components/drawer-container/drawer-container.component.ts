@@ -75,24 +75,28 @@ export class DrawerContainerComponent implements AfterContentInit {
             break;
           case DrawerMode.Over:
             this.hasBackdrop = true;
+            this.handleFullDrawerPosition(drawer);
             break;
         }
       } else {
         this.active = null;
         this.hasBackdrop = false;
-
-        switch (drawer.position) {
-          case DrawerPosition.Start:
-            this.contentStyle.marginLeft = drawer.docked ? '50px' : null;
-            break;
-          case DrawerPosition.End:
-            this.contentStyle.marginRight = drawer.docked ? '50px' : null;
-            break;
-        }
+        this.handleFullDrawerPosition(drawer);
       }
 
       this.ref.markForCheck();
     });
 
+  }
+
+  private handleFullDrawerPosition(drawer: DrawerComponent): void {
+    switch (drawer.position) {
+      case DrawerPosition.Start:
+        this.contentStyle.marginLeft = drawer.docked ? '50px' : null;
+        break;
+      case DrawerPosition.End:
+        this.contentStyle.marginRight = drawer.docked ? '50px' : null;
+        break;
+    }
   }
 }
