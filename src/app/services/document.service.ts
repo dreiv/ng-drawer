@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
 
-export enum FormFactor { SMALL, MEDIUM, LARGE, EXTRALARGE }
+export enum FormFactor { S, M, L, XL }
 
 @Injectable()
 export class DocumentService {
@@ -13,27 +13,23 @@ export class DocumentService {
   constructor() {
     Observable.fromEvent<UIEvent>(window, 'resize')
       .debounceTime(250)
-      .subscribe(() => {
-        this.onResize$.next(window.innerWidth);
-      });
+      .subscribe(() => this.onResize$.next(window.innerWidth));
 
     this.onResize$
-      .map(deviceWidth => this.getFormFactor(deviceWidth))
+      .map((deviceWidth: number) => this.getFormFactor(deviceWidth))
       .distinctUntilChanged()
-      .subscribe((factor: FormFactor) => {
-        this.formFactor$.next(factor);
-      });
+      .subscribe((factor: FormFactor) => this.formFactor$.next(factor));
   }
 
   private getFormFactor(deviceWidth): FormFactor {
     if (deviceWidth < 768) {
-      return FormFactor.SMALL;
+      return FormFactor.S;
     } else if (deviceWidth < 1200) {
-      return FormFactor.MEDIUM;
+      return FormFactor.M;
     } else if (deviceWidth < 1600) {
-      return FormFactor.LARGE;
+      return FormFactor.L;
     } else {
-      return FormFactor.EXTRALARGE;
+      return FormFactor.XL;
     }
   }
 

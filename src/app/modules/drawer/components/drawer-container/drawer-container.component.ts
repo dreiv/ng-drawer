@@ -24,17 +24,17 @@ import { DrawerComponent, DrawerMode, DrawerPosition } from '../drawer/drawer.co
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DrawerContainerComponent implements AfterContentInit {
-  @ContentChildren(DrawerComponent) drawers: QueryList<DrawerComponent>;
-
-  contentStyle: CSSStyleDeclaration = {} as CSSStyleDeclaration;
-
-  @HostBinding('class.backdrop') private hasBackdrop;
-
+  @ContentChildren(DrawerComponent)
+  private drawers: QueryList<DrawerComponent>;
+  @HostBinding('class.backdrop')
+  private hasBackdrop;
   /** The drawer child that is currently opened. */
   private active: DrawerComponent;
 
+  contentStyle: CSSStyleDeclaration = {} as CSSStyleDeclaration;
+
   @HostListener('click', ['$event'])
-  onClick(event: Event) {
+  private onClick(event: Event) {
     if (this.hasBackdrop && !this.active.el().nativeElement.contains(event.target)) {
       this.active.close();
     }
@@ -59,29 +59,37 @@ export class DrawerContainerComponent implements AfterContentInit {
   /** Actions done on panel events. */
   private watch(drawer: DrawerComponent): void {
     startWith.call(drawer.onStateChange, null).subscribe(() => {
+      if (drawer.opened) {
+        this.active = drawer;
 
-      if (drawer.opened && drawer.mode === DrawerMode.Push) {
-        switch (drawer.position) {
-          case DrawerPosition.Start:
-            this.contentStyle.marginLeft = drawer.docked ? drawer.width : undefined;
+        switch (drawer.mode) {
+          case DrawerMode.Push:
+            switch (drawer.position) {
+              case DrawerPosition.Start:
+                this.contentStyle.marginLeft = drawer.docked ? drawer.width : null;
+                break;
+              case DrawerPosition.End:
+                this.contentStyle.marginRight = drawer.docked ? drawer.width : null;
+                break;
+            }
             break;
-          case DrawerPosition.End:
-            this.contentStyle.marginRight = drawer.docked ? drawer.width : undefined;
+          case DrawerMode.Over:
+            this.hasBackdrop = true;
             break;
         }
       } else {
+        this.active = null;
+        this.hasBackdrop = false;
+
         switch (drawer.position) {
           case DrawerPosition.Start:
-            this.contentStyle.marginLeft = drawer.docked ? '50px' : undefined;
+            this.contentStyle.marginLeft = drawer.docked ? '50px' : null;
             break;
           case DrawerPosition.End:
-            this.contentStyle.marginRight = drawer.docked ? '50px' : undefined;
+            this.contentStyle.marginRight = drawer.docked ? '50px' : null;
             break;
         }
       }
-
-      this.active = drawer.opened && drawer.mode === DrawerMode.Over ? drawer : undefined;
-      this.hasBackdrop = this.active;
 
       this.ref.markForCheck();
     });

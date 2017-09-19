@@ -44,18 +44,18 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   private setDrawerDocked(formFactor: FormFactor): boolean {
-    return formFactor === FormFactor.MEDIUM || formFactor === FormFactor.LARGE;
+    return formFactor === FormFactor.M || formFactor === FormFactor.L;
   }
 
   private _showFooter(formFactor: FormFactor): boolean {
-    return formFactor === FormFactor.SMALL;
+    return formFactor === FormFactor.S;
   }
 
   private setDrawerWidth(formFactor: FormFactor): string {
-    return formFactor === FormFactor.MEDIUM || formFactor === FormFactor.LARGE ? '400px' : undefined;
+    return formFactor === FormFactor.M || formFactor === FormFactor.L ? '400px' : undefined;
   }
 
   private setDrawerMode(formFactor: FormFactor): DrawerMode {
-    return formFactor === FormFactor.LARGE ? DrawerMode.Push : DrawerMode.Over;
+    return formFactor === FormFactor.L ? DrawerMode.Push : DrawerMode.Over;
   }
 }
