@@ -15,6 +15,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   drawerMode: DrawerMode;
   showFooter: boolean;
   isFooterTransitioning: boolean;
+  isSideMode: boolean;
 
   constructor(private document$: DocumentService) {}
 
@@ -36,6 +37,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.drawerWidth = this.setDrawerWidth(formFactor);
     this.isDrawerDocked = this.setDrawerDocked(formFactor);
     this.drawerMode = this.setDrawerMode(formFactor);
+    this.isSideMode = this._isSideMode(formFactor);
     const show = this._showFooter(formFactor);
     if (show !== this.showFooter) {
       this.isFooterTransitioning = true;
@@ -64,6 +66,10 @@ export class AppComponent implements OnInit, AfterViewInit {
       default:
         return DrawerMode.Over;
     }
+  }
+
+  private _isSideMode(formFactor: FormFactor): boolean {
+    return formFactor === FormFactor.XL;
   }
 
   private isMediumOrLarge(formFactor: FormFactor): boolean {

@@ -97,7 +97,7 @@ export class DrawerComponent implements OnInit {
 
   @HostBinding('class.over') private isOverMode = true;
   @HostBinding('class.push') private isPushMode: boolean;
-  @HostBinding('class.side') private isSideMode: boolean;
+  @HostBinding('class.side') isSideMode: boolean;
 
   @Input()
   get mode(): DrawerMode {

@@ -1,46 +1,70 @@
 :host {
-  background: wheat;
-  height: 100%;
-  width: 100%;
-  display: block;
-  position: absolute;
+  background: white;
+  display: flex;
+  flex-direction: column;
   will-change: transform, width;
   transition: all .3s cubic-bezier(0, 0, 0.3, 1);
-  top: 0;
-  bottom: 0;
 
-  &.opened.over {
-    z-index: 1;
-  }
+  &:not(.side) {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
 
-  &.start {
-    left: 0;
+    &.opened.over {
+      z-index: 1;
+    }
 
-    &:not(.opened) {
-      transform: translateX(-100%);
+    &.start {
+      left: 0;
 
-      &.docked {
-        transform: translateX(-100%) translateX(50px);
+      &:not(.opened) {
+        transform: translateX(-100%);
+
+        &.docked {
+          transform: translateX(-100%) translateX(50px);
+        }
+      }
+    }
+
+    &.end {
+      right: 0;
+
+      &:not(.opened) {
+        transform: translateX(100%);
+
+        &.docked {
+          transform: translateX(100%) translateX(-50px);
+        }
       }
     }
   }
 
-  &.end {
-    right: 0;
+  &.side {
+    flex: 1;
 
-    &:not(.opened) {
-      transform: translateX(100%);
+    aside {
+      width: 20rem;
+    }
 
-      &.docked {
-        transform: translateX(100%) translateX(-50px);
+    &.start {
+      order: 1;
+
+      aside {
+        margin-left: auto;
       }
+    }
+
+    &.end {
+      order: 3;
     }
   }
 }
 
 header {
   height: 50px;
-  background: wheat;
+  background: white;
   will-change: transform, width;
   display: flex;
   align-items: center;

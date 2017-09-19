@@ -6,6 +6,7 @@ import {
   ContentChildren,
   HostBinding,
   HostListener,
+  Input,
   QueryList
 } from '@angular/core';
 import { startWith } from 'rxjs/operator/startWith';
@@ -32,6 +33,10 @@ export class DrawerContainerComponent implements AfterContentInit {
   private active: DrawerComponent;
 
   contentStyle: CSSStyleDeclaration = {} as CSSStyleDeclaration;
+
+  @Input()
+  @HostBinding('class.side')
+  private isSideMode: boolean;
 
   @HostListener('click', ['$event'])
   private onClick(event: Event) {
