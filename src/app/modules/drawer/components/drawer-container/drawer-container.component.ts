@@ -80,13 +80,13 @@ export class DrawerContainerComponent implements AfterContentInit {
             break;
           case DrawerMode.Over:
             this.hasBackdrop = true;
-            this.handleFullDrawerPosition(drawer);
+            this.handleContentMargins(drawer);
             break;
         }
       } else {
         this.active = null;
         this.hasBackdrop = false;
-        this.handleFullDrawerPosition(drawer);
+        this.handleContentMargins(drawer);
       }
 
       this.ref.markForCheck();
@@ -94,7 +94,7 @@ export class DrawerContainerComponent implements AfterContentInit {
 
   }
 
-  private handleFullDrawerPosition(drawer: DrawerComponent): void {
+  private handleContentMargins(drawer: DrawerComponent): void {
     switch (drawer.position) {
       case DrawerPosition.Start:
         this.contentStyle.marginLeft = drawer.docked ? '50px' : null;

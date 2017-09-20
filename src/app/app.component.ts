@@ -10,9 +10,9 @@ import { DocumentService, FormFactor } from './services/document.service';
 export class AppComponent implements OnInit, AfterViewInit {
   private formFactor: FormFactor;
 
-  drawerWidth: string;
-  isDrawerDocked: boolean;
-  drawerMode: DrawerMode;
+  drawersWidth: string;
+  areDrawersDocked: boolean;
+  drawersMode: DrawerMode;
   showFooter: boolean;
   isFooterTransitioning: boolean;
   isSideMode: boolean;
@@ -21,7 +21,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.formFactor = this.document$.formFactor$.getValue();
-    this.updateDrawer(this.formFactor);
+    this.updateDrawers(this.formFactor);
   }
 
   ngAfterViewInit(): void {
@@ -29,14 +29,14 @@ export class AppComponent implements OnInit, AfterViewInit {
       .filter(formFactor => formFactor !== this.formFactor)
       .subscribe((formFactor: FormFactor) => {
         this.formFactor = formFactor;
-        this.updateDrawer(formFactor);
+        this.updateDrawers(formFactor);
       });
   }
 
-  private updateDrawer(formFactor: FormFactor): void {
-    this.drawerWidth = this.setDrawerWidth(formFactor);
-    this.isDrawerDocked = this.setDrawerDocked(formFactor);
-    this.drawerMode = this.setDrawerMode(formFactor);
+  private updateDrawers(formFactor: FormFactor): void {
+    this.drawersWidth = this.drawerWidth(formFactor);
+    this.areDrawersDocked = this.drawerDocked(formFactor);
+    this.drawersMode = this.drawerMode(formFactor);
     this.isSideMode = this._isSideMode(formFactor);
     const show = this._showFooter(formFactor);
     if (show !== this.showFooter) {
@@ -45,7 +45,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.showFooter = show;
   }
 
-  private setDrawerDocked(formFactor: FormFactor): boolean {
+  private drawerDocked(formFactor: FormFactor): boolean {
     return this.isMediumOrLarge(formFactor);
   }
 
@@ -53,11 +53,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     return formFactor === FormFactor.S;
   }
 
-  private setDrawerWidth(formFactor: FormFactor): string {
+  private drawerWidth(formFactor: FormFactor): string {
     return this.isMediumOrLarge(formFactor) ? '20rem' : null;
   }
 
-  private setDrawerMode(formFactor: FormFactor): DrawerMode {
+  private drawerMode(formFactor: FormFactor): DrawerMode {
     switch (formFactor) {
       case FormFactor.XL:
         return DrawerMode.Side;

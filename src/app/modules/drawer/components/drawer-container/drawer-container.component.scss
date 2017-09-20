@@ -17,6 +17,7 @@
 
 .content {
   overflow: auto;
+  order: 2;
 
   will-change: margin;
   transition: margin 0.3s cubic-bezier(0, 0, 0.3, 1);
@@ -27,9 +28,5 @@
     bottom: 0;
     left: 0;
     right: 0;
-  }
-
-  :host(.side) & {
-    order: 2;
   }
 }

@@ -155,7 +155,7 @@
       tincidunt et, tincidunt eget, semper nec, quam. Sed hendrerit. Morbi ac felis.</p>
   </div>
 
-  <app-drawer #startDrawer [docked]="isDrawerDocked" [width]="drawerWidth" [mode]="drawerMode">
+  <app-drawer #startDrawer [docked]="areDrawersDocked" [width]="drawersWidth" [mode]="drawersMode">
     <drawer-header><h2>Table of Contents</h2></drawer-header>
 
     <ol>
@@ -186,7 +186,7 @@
 
   </app-drawer>
 
-  <app-drawer #endDrawer [position]="'end'" [docked]="isDrawerDocked" [width]="drawerWidth" [mode]="drawerMode">
+  <app-drawer #endDrawer [position]="'end'" [docked]="areDrawersDocked" [width]="drawersWidth" [mode]="drawersMode">
     <drawer-header><h2>Related Documents</h2></drawer-header>
 
     <ul>
