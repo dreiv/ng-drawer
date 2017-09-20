@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { DrawerMode } from './modules/drawer/components/drawer/drawer.component';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { DrawerComponent, DrawerMode } from './modules/drawer/components/drawer/drawer.component';
 import { DocumentService, FormFactor } from './services/document.service';
 
 @Component({
@@ -16,6 +16,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   showFooter: boolean;
   isFooterTransitioning: boolean;
   isSideMode: boolean;
+
+  @ViewChild('startDrawer') private startDrawer: DrawerComponent;
+  @ViewChild('endDrawer') private endDrawer: DrawerComponent;
 
   constructor(private document$: DocumentService) {}
 
@@ -74,5 +77,21 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   private isMediumOrLarge(formFactor: FormFactor): boolean {
     return formFactor === FormFactor.M || formFactor === FormFactor.L;
+  }
+
+  onStartClick() {
+    if (!this.startDrawer.opened && this.endDrawer.opened) {
+      this.endDrawer.close();
+    }
+
+    this.startDrawer.toggle();
+  }
+
+  onEndClick() {
+    if (!this.endDrawer.opened && this.startDrawer.opened) {
+      this.startDrawer.close();
+    }
+
+    this.endDrawer.toggle();
   }
 }

@@ -6,7 +6,10 @@
   transition: all .3s cubic-bezier(0, 0, 0.3, 1);
   flex: 1;
 
-  &.opened {
+  &.opened,
+  &.side {
+    padding-left: .6rem;
+    padding-right: .6rem;
     overflow: auto;
   }
 

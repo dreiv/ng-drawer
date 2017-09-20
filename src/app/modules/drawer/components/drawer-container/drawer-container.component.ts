@@ -82,6 +82,9 @@ export class DrawerContainerComponent implements AfterContentInit {
             this.hasBackdrop = true;
             this.handleContentMargins(drawer);
             break;
+          case DrawerMode.Side:
+            this.hasBackdrop = false;
+            break;
         }
       } else {
         this.active = null;

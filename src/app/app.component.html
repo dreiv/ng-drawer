@@ -216,6 +216,6 @@
 
 <footer [class.hide]="!showFooter" *ngIf="showFooter || isFooterTransitioning"
         (transitionend)="isFooterTransitioning = false">
-  <button (click)="startDrawer.toggle()">Table of Contents</button>
-  <button (click)="endDrawer.toggle()">Related Stuff</button>
+  <button (click)="onStartClick()">Table of Contents</button>
+  <button (click)="onEndClick()">Related Stuff</button>
 </footer>
