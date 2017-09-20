@@ -106,6 +106,9 @@ export class DrawerComponent implements OnInit {
 
   set mode(value: DrawerMode) {
     this._mode = value;
+    if (value === DrawerMode.Side) {
+      this.isHeaderSpun = false;
+    }
 
     this.handleModeClasses();
     this.onStateChange.emit();

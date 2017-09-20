@@ -1,9 +1,9 @@
 :host {
-  background: white;
   display: flex;
   flex-direction: column;
   will-change: transform, width;
   transition: all .3s cubic-bezier(0, 0, 0.3, 1);
+  flex: 1;
 
   &.opened {
     overflow: auto;
@@ -54,7 +54,6 @@
   }
 
   &.side {
-    flex: 1;
 
     > /deep/ * {
       max-width: 20rem;
