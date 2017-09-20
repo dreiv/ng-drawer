@@ -4,7 +4,18 @@
   flex-direction: column;
   will-change: transform, width;
   transition: all .3s cubic-bezier(0, 0, 0.3, 1);
-  overflow: auto;
+
+  &.opened {
+    overflow: auto;
+  }
+
+  &.start {
+    order: 1;
+  }
+
+  &.end {
+    order: 3;
+  }
 
   &:not(.side) {
     height: 100%;
@@ -49,16 +60,8 @@
       max-width: 20rem;
     }
 
-    &.start {
-      order: 1;
-
-      > /deep/ * {
-        margin-left: auto;
-      }
-    }
-
-    &.end {
-      order: 3;
+    &.start > /deep/ * {
+      margin-left: auto;
     }
   }
 }
