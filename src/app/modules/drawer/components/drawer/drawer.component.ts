@@ -148,12 +148,12 @@ export class DrawerComponent implements OnInit {
   }
 
   /** Open the drawer. */
-  public open() {
+  public open(): void {
     this.toggle(true);
   }
 
   /** Close the drawer. */
-  public close() {
+  public close(): void {
     this.toggle(false);
   }
 
@@ -161,7 +161,7 @@ export class DrawerComponent implements OnInit {
    * Toggle the drawer.
    * @param isOpen Whether the drawer should be open.
    */
-  toggle(isOpen: boolean = !this.opened) {
+  toggle(isOpen: boolean = !this.opened): void {
     this.opened = isOpen;
   }
 
