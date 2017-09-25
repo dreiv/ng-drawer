@@ -38,6 +38,12 @@ export class DrawerContainerComponent implements AfterContentInit {
   @HostBinding('class.side')
   private isSideMode: boolean;
 
+  @HostBinding('class.fillStart')
+  private isFillStart: boolean;
+
+  @HostBinding('class.fillEnd')
+  private isFillEnd: boolean;
+
   @HostListener('click', ['$event'])
   private onClick(event: Event) {
     if (this.hasBackdrop && !this.active.getElRef().nativeElement.contains(event.target)) {
@@ -49,7 +55,27 @@ export class DrawerContainerComponent implements AfterContentInit {
 
   ngAfterContentInit(): void {
     this.validatePanels();
+    this.init();
     this.drawers.forEach(drawer => this.watch(drawer));
+  }
+
+  private init() {
+    let hasStart: boolean;
+    let hasEnd: boolean;
+
+    this.drawers.forEach((drawer: DrawerComponent) => {
+      switch (drawer.position) {
+        case DrawerPosition.Start:
+          hasStart = true;
+          break;
+        case DrawerPosition.End:
+          hasEnd = true;
+          break;
+      }
+    });
+
+    this.isFillStart = !hasStart;
+    this.isFillEnd = !hasEnd;
   }
 
   /** Validate the state of the drawer children components. */

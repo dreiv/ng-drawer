@@ -50,11 +50,10 @@ export class DrawerComponent implements OnInit {
   }
 
   set opened(value: boolean) {
+    this._opened = value;
     if (this.docked) {
       this.isHeaderSpun = !value;
     }
-
-    this._opened = value;
 
     this.onStateChange.emit();
   }

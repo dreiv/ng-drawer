@@ -13,6 +13,19 @@
     background-color: rgba(0, 0, 0, .4);
     opacity: 1;
   }
+
+  &.fillStart::before {
+    content: '';
+    display: flex;
+    flex: 1;
+  }
+
+  &.fillEnd::after {
+    content: '';
+    display: flex;
+    flex: 1;
+    order: 2;
+  }
 }
 
 .content {
